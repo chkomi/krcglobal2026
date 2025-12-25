@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="../assets/css/variables.css">
     <link rel="stylesheet" href="../assets/css/base.css">
     <link rel="stylesheet" href="../assets/css/components.css">
-    <link rel="stylesheet" href="../assets/css/pages.css">
 
     <!-- Pretendard Font -->
     <link rel="stylesheet" as="style" crossorigin
@@ -21,495 +20,686 @@
     <link rel="stylesheet" href="../frontend/lib/leaflet/leaflet.css" />
 
     <style>
-        /* GIS 페이지 전용 스타일 */
-        .gis-page {
-            position: fixed;
-            top: var(--header-height);
-            left: var(--sidebar-width);
-            right: 0;
-            bottom: 0;
+        /* KRC Global Map 스타일 */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-family-primary);
+            overflow: hidden;
+        }
+
+        .gis-container {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* 좌측 사이드바 */
+        .gis-sidebar {
+            width: 320px;
+            background: var(--color-neutral-0);
+            border-right: 1px solid var(--color-neutral-200);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* 헤더 */
+        .sidebar-header {
+            padding: var(--spacing-5);
+            border-bottom: 1px solid var(--color-neutral-200);
+        }
+
+        .sidebar-title {
+            font-size: var(--font-size-2xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-primary-700);
+            margin-bottom: var(--spacing-2);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-2);
+        }
+
+        .sidebar-subtitle {
+            font-size: var(--font-size-sm);
+            color: var(--color-neutral-600);
+        }
+
+        /* 필터 탭 */
+        .filter-tabs {
+            display: flex;
+            gap: var(--spacing-2);
+            padding: var(--spacing-4);
+            border-bottom: 1px solid var(--color-neutral-200);
+        }
+
+        .filter-tab {
+            flex: 1;
+            padding: var(--spacing-2) var(--spacing-3);
+            border: 1px solid var(--color-neutral-300);
+            border-radius: var(--radius-md);
+            background: var(--color-neutral-0);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .filter-tab:hover {
+            background: var(--color-neutral-50);
+        }
+
+        .filter-tab.active {
+            background: var(--color-primary-500);
+            color: var(--color-neutral-0);
+            border-color: var(--color-primary-500);
+        }
+
+        .filter-tab.oda.active {
+            background: #E65100;
+            border-color: #E65100;
+        }
+
+        /* 통계 카드 */
+        .stats-section {
+            padding: var(--spacing-4);
+            display: flex;
+            gap: var(--spacing-3);
+        }
+
+        .stat-box {
+            flex: 1;
+            padding: var(--spacing-3);
+            border-radius: var(--radius-md);
+            border: 2px solid;
+        }
+
+        .stat-box.consulting {
+            border-color: var(--color-primary-500);
+            background: var(--color-primary-50);
+        }
+
+        .stat-box.oda {
+            border-color: #E65100;
+            background: #FFF3E0;
+        }
+
+        .stat-label {
+            font-size: var(--font-size-xs);
+            color: var(--color-neutral-600);
+            margin-bottom: var(--spacing-1);
+        }
+
+        .stat-value {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-bold);
+        }
+
+        .stat-box.consulting .stat-value {
+            color: var(--color-primary-700);
+        }
+
+        .stat-box.oda .stat-value {
+            color: #E65100;
+        }
+
+        /* 국가 리스트 */
+        .country-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: var(--spacing-4);
+        }
+
+        .continent-group {
+            margin-bottom: var(--spacing-5);
+        }
+
+        .continent-title {
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-neutral-700);
+            margin-bottom: var(--spacing-3);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .country-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-3);
+            padding: var(--spacing-3);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: background var(--transition-fast);
+            margin-bottom: var(--spacing-2);
+        }
+
+        .country-item:hover {
             background: var(--color-neutral-100);
+        }
+
+        .country-flag {
+            font-size: 24px;
+            width: 32px;
+            text-align: center;
+        }
+
+        .country-name {
+            flex: 1;
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            color: var(--color-neutral-900);
+        }
+
+        .project-badges {
+            display: flex;
+            gap: var(--spacing-1);
+        }
+
+        .project-badge {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-neutral-0);
+        }
+
+        .project-badge.consulting {
+            background: var(--color-primary-500);
+        }
+
+        .project-badge.oda {
+            background: #E65100;
+        }
+
+        /* 지도 영역 */
+        .gis-map {
+            flex: 1;
+            position: relative;
         }
 
         #map {
             width: 100%;
             height: 100%;
-            z-index: 1;
         }
 
-        /* 필터 패널 */
-        .gis-filter-panel {
+        /* 우측 상단 버튼 */
+        .map-controls {
             position: absolute;
             top: 20px;
-            left: 20px;
-            z-index: 1000;
-            background: var(--color-neutral-0);
-            border-radius: var(--radius-lg);
-            padding: var(--spacing-5);
-            box-shadow: var(--shadow-lg);
-            min-width: 280px;
-            max-width: 350px;
-        }
-
-        .gis-filter-panel h3 {
-            margin: 0 0 var(--spacing-4) 0;
-            font-size: var(--font-size-lg);
-            color: var(--color-primary-700);
-        }
-
-        .filter-group {
-            margin-bottom: var(--spacing-4);
-        }
-
-        .filter-group label {
-            display: block;
-            font-size: var(--font-size-sm);
-            font-weight: var(--font-weight-semibold);
-            color: var(--color-neutral-700);
-            margin-bottom: var(--spacing-2);
-        }
-
-        .filter-checkbox {
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-2);
-            margin-bottom: var(--spacing-2);
-        }
-
-        .filter-checkbox input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-        }
-
-        .filter-checkbox label {
-            font-size: var(--font-size-sm);
-            font-weight: var(--font-weight-regular);
-            cursor: pointer;
-            margin: 0;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: var(--spacing-3);
-            border: 1px solid var(--color-neutral-300);
-            border-radius: var(--radius-md);
-            font-size: var(--font-size-sm);
-            margin-bottom: var(--spacing-4);
-        }
-
-        /* 범례 */
-        .gis-legend {
-            position: absolute;
-            bottom: 20px;
             right: 20px;
             z-index: 1000;
-            background: var(--color-neutral-0);
-            border-radius: var(--radius-md);
-            padding: var(--spacing-4);
-            box-shadow: var(--shadow-md);
+            display: flex;
+            gap: var(--spacing-2);
         }
 
-        .legend-item {
+        .map-control-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--color-neutral-0);
+            border: none;
+            box-shadow: var(--shadow-md);
+            cursor: pointer;
             display: flex;
             align-items: center;
-            gap: var(--spacing-2);
-            margin-bottom: var(--spacing-2);
-            font-size: var(--font-size-sm);
+            justify-content: center;
+            font-size: 18px;
+            transition: all var(--transition-fast);
         }
 
-        .legend-item:last-child {
-            margin-bottom: 0;
+        .map-control-btn:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
         }
 
-        .legend-dot {
-            width: 16px;
-            height: 16px;
+        /* 타임라인 모달 */
+        .timeline-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-6);
+        }
+
+        .timeline-modal.active {
+            display: flex;
+        }
+
+        .timeline-content {
+            background: var(--color-neutral-0);
+            border-radius: var(--radius-xl);
+            max-width: 900px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: var(--spacing-8);
+            position: relative;
+        }
+
+        .timeline-close {
+            position: absolute;
+            top: var(--spacing-4);
+            right: var(--spacing-4);
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
-            border: 2px solid;
-        }
-
-        .legend-dot.consulting {
-            border-color: var(--color-primary-500);
-            background: var(--color-primary-100);
-        }
-
-        .legend-dot.oda {
-            border-color: var(--color-warning-500);
-            background: var(--color-warning-100);
-        }
-
-        /* 마커 스타일 */
-        .custom-div-icon {
-            background: transparent !important;
-            border: none !important;
-        }
-
-        .marker-pin {
-            width: 30px;
-            height: 30px;
-            border-radius: 50% 50% 50% 0;
-            transform: rotate(-45deg);
-            border: 3px solid;
+            background: var(--color-neutral-100);
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .marker-pin.consulting {
-            border-color: var(--color-primary-600);
-            background: var(--color-primary-500);
+        .timeline-header {
+            margin-bottom: var(--spacing-6);
         }
 
-        .marker-pin.oda {
-            border-color: #856404;
-            background: var(--color-warning-500);
-        }
-
-        .marker-inner {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: white;
-            transform: rotate(45deg);
-        }
-
-        /* 팝업 스타일 */
-        .leaflet-popup-content-wrapper {
-            border-radius: var(--radius-lg) !important;
-            box-shadow: var(--shadow-xl) !important;
-        }
-
-        .popup-content {
-            min-width: 200px;
-            padding: var(--spacing-2);
-        }
-
-        .popup-title {
+        .timeline-country {
+            font-size: var(--font-size-3xl);
             font-weight: var(--font-weight-bold);
+            color: var(--color-neutral-900);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-3);
+        }
+
+        /* 타임라인 */
+        .timeline {
+            position: relative;
+            padding: var(--spacing-8) 0;
+        }
+
+        .timeline-axis {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #4A2E2A;
+            transform: translateY(-50%);
+        }
+
+        .timeline-items {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-8);
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-4);
+        }
+
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #4A2E2A;
+            border: 3px solid var(--color-neutral-0);
+            flex-shrink: 0;
+            z-index: 1;
+        }
+
+        .timeline-card {
+            flex: 1;
+            padding: var(--spacing-4);
+            border-radius: var(--radius-lg);
+            background: var(--color-neutral-0);
+            border: 2px solid;
+            box-shadow: var(--shadow-md);
+        }
+
+        .timeline-card.consulting {
+            border-color: var(--color-primary-500);
+        }
+
+        .timeline-card.oda {
+            border-color: #E65100;
+        }
+
+        .timeline-card-title {
             font-size: var(--font-size-base);
+            font-weight: var(--font-weight-bold);
             color: var(--color-neutral-900);
             margin-bottom: var(--spacing-2);
         }
 
-        .popup-info {
-            font-size: var(--font-size-sm);
-            color: var(--color-neutral-600);
-            margin-bottom: var(--spacing-1);
+        .timeline-card-meta {
+            display: flex;
+            gap: var(--spacing-2);
+            flex-wrap: wrap;
+            margin-bottom: var(--spacing-2);
         }
 
-        .popup-budget {
-            font-weight: var(--font-weight-semibold);
+        .timeline-chip {
+            padding: var(--spacing-1) var(--spacing-2);
+            border-radius: var(--radius-sm);
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-medium);
+        }
+
+        .timeline-chip.budget {
+            background: var(--color-success-100);
             color: var(--color-success-500);
-            margin-top: var(--spacing-2);
+        }
+
+        .timeline-chip.period {
+            background: var(--color-neutral-100);
+            color: var(--color-neutral-700);
+        }
+
+        .timeline-chip.status {
+            background: var(--color-neutral-900);
+            color: var(--color-neutral-0);
+        }
+
+        /* 마커 스타일 */
+        .custom-marker {
+            background: transparent !important;
+            border: none !important;
+        }
+
+        .marker-flag {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .marker-flag.consulting {
+            border-color: var(--color-primary-500);
+        }
+
+        .marker-flag.oda {
+            border-color: #E65100;
+        }
+
+        .marker-flag.mixed {
+            border-color: var(--color-neutral-700);
         }
 
         /* 반응형 */
-        @media (max-width: 1200px) {
-            .gis-page {
-                left: 0;
-            }
-        }
-
         @media (max-width: 768px) {
-            .gis-filter-panel {
-                top: 10px;
-                left: 10px;
-                right: 10px;
-                min-width: auto;
-                max-width: none;
+            .gis-sidebar {
+                position: absolute;
+                left: -320px;
+                z-index: 1500;
+                transition: left var(--transition-base);
             }
 
-            .gis-legend {
-                bottom: 10px;
-                right: 10px;
-                left: 10px;
+            .gis-sidebar.open {
+                left: 0;
             }
         }
     </style>
 </head>
 
-<body class="app-layout">
-    <a href="#main-content" class="skip-nav">본문 바로가기</a>
-
-    <!-- 헤더 -->
-    <header class="app-header">
-        <div class="header-left">
-            <button class="sidebar-toggle" id="sidebarToggle" aria-label="메뉴 토글">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M3 12h18M3 6h18M3 18h18" />
-                </svg>
-            </button>
-            <h1 class="app-title">
-                <span style="font-size: 32px;">🌏</span>
-                GBMS
-            </h1>
-        </div>
-
-        <div class="header-right">
-            <button class="theme-toggle" id="themeToggle" aria-label="화면 모드 변경">🌙</button>
-            <div class="user-menu">
-                <button class="user-menu-button">
-                    <div class="user-avatar">관</div>
-                    <span id="userName" style="font-size: var(--font-size-sm);">관리자</span>
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <!-- 사이드바 -->
-    <aside class="app-sidebar" id="sidebar">
-        <nav class="sidebar-nav" aria-label="주메뉴">
-            <ul class="nav-list">
-                <li class="nav-item">
-                    <a href="../dashboard.html" class="nav-link">
-                        <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2">
-                            <rect x="3" y="3" width="7" height="7" />
-                            <rect x="14" y="3" width="7" height="7" />
-                            <rect x="14" y="14" width="7" height="7" />
-                            <rect x="3" y="14" width="7" height="7" />
-                        </svg>
-                        <span class="nav-text">대시보드</span>
-                    </a>
-                </li>
-                <li class="nav-item has-submenu">
-                    <button class="nav-link" aria-expanded="false">
-                        <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2">
-                            <path d="M9 11l3 3L22 4" />
-                            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
-                        </svg>
-                        <span class="nav-text">사업관리</span>
-                        <svg class="nav-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2">
-                            <path d="M9 18l6-6-6-6" />
-                        </svg>
-                    </button>
-                    <ul class="submenu">
-                        <li><a href="projects/overseas-tech.html">해외기술용역</a></li>
-                        <li><a href="projects/oda-bilateral.html">ODA 양자</a></li>
-                        <li><a href="projects/oda-multilateral.html">ODA 다자성양자</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a href="gis.html" class="nav-link active">
-                        <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="10" r="3" />
-                            <path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 10-16 0c0 3 2.7 6.9 8 11.7z" />
-                        </svg>
-                        <span class="nav-text">GIS 지도</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </aside>
-
-    <!-- GIS 지도 -->
-    <main id="main-content" class="gis-page">
-        <div id="map"></div>
-
-        <!-- 필터 패널 -->
-        <div class="gis-filter-panel card">
-            <h3>필터</h3>
-            <input type="text" id="searchInput" class="search-input" placeholder="사업명, 국가 검색...">
-
-            <div class="filter-group">
-                <label>카테고리</label>
-                <div class="filter-checkbox">
-                    <input type="checkbox" id="filterConsulting" checked>
-                    <label for="filterConsulting">해외기술용역</label>
+<body>
+    <div class="gis-container">
+        <!-- 좌측 사이드바 -->
+        <div class="gis-sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-title">
+                    <span>🌏</span>
+                    <span>GBMS 글로벌 지도</span>
                 </div>
-                <div class="filter-checkbox">
-                    <input type="checkbox" id="filterODA" checked>
-                    <label for="filterODA">ODA</label>
+                <div class="sidebar-subtitle">해외사업 현황</div>
+            </div>
+
+            <div class="filter-tabs">
+                <button class="filter-tab consulting active" data-filter="consulting">기술컨설팅</button>
+                <button class="filter-tab oda active" data-filter="oda">ODA</button>
+            </div>
+
+            <div class="stats-section">
+                <div class="stat-box consulting">
+                    <div class="stat-label">기술컨설팅</div>
+                    <div class="stat-value" id="consultingCount">0</div>
+                </div>
+                <div class="stat-box oda">
+                    <div class="stat-label">ODA</div>
+                    <div class="stat-value" id="odaCount">0</div>
                 </div>
             </div>
 
-            <div class="filter-group">
-                <label>상태</label>
-                <div class="filter-checkbox">
-                    <input type="checkbox" id="filterPlanning" checked>
-                    <label for="filterPlanning">기획</label>
-                </div>
-                <div class="filter-checkbox">
-                    <input type="checkbox" id="filterInProgress" checked>
-                    <label for="filterInProgress">진행중</label>
-                </div>
-                <div class="filter-checkbox">
-                    <input type="checkbox" id="filterCompleted" checked>
-                    <label for="filterCompleted">완료</label>
-                </div>
+            <div class="country-list" id="countryList">
+                <!-- 동적으로 생성 -->
             </div>
         </div>
 
-        <!-- 범례 -->
-        <div class="gis-legend card">
-            <div class="legend-item">
-                <div class="legend-dot consulting"></div>
-                <span>해외기술용역</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-dot oda"></div>
-                <span>ODA</span>
+        <!-- 지도 영역 -->
+        <div class="gis-map">
+            <div id="map"></div>
+
+            <div class="map-controls">
+                <button class="map-control-btn" id="searchBtn" title="검색">🔍</button>
+                <button class="map-control-btn" id="menuBtn" title="메뉴">☰</button>
             </div>
         </div>
-    </main>
+    </div>
+
+    <!-- 타임라인 모달 -->
+    <div class="timeline-modal" id="timelineModal">
+        <div class="timeline-content">
+            <button class="timeline-close" id="closeTimeline">×</button>
+            <div class="timeline-header">
+                <div class="timeline-country" id="timelineCountry"></div>
+            </div>
+            <div class="timeline" id="timelineContainer">
+                <div class="timeline-axis"></div>
+                <div class="timeline-items" id="timelineItems">
+                    <!-- 동적으로 생성 -->
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="../assets/js/common.js"></script>
-    <script src="../assets/js/api.js"></script>
     <script src="../frontend/lib/leaflet/leaflet.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // 인증 확인
-            if (!checkAuth()) {
-                window.location.href = '../index.html';
-                return;
-            }
+        // 샘플 데이터
+        const projects = [
+            { country: '베트남', flag: '🇻🇳', lat: 16.0, lng: 108.0, category: 'Consulting', title: '캄보디아 관개시설 현대화', period: '2023-2025', budget: 8500, status: '진행중' },
+            { country: '베트남', flag: '🇻🇳', lat: 16.0, lng: 108.0, category: 'ODA', title: '베트남 스마트팜 구축', period: '2024-2026', budget: 12000, status: '진행중' },
+            { country: '라오스', flag: '🇱🇦', lat: 19.8563, lng: 102.4955, category: 'ODA', title: '라오스 농업용수 개발', period: '2022-2024', budget: 5200, status: '완료' },
+            { country: '필리핀', flag: '🇵🇭', lat: 12.8797, lng: 121.7740, category: 'ODA', title: '필리핀 K-라이스벨트', period: '2024-2027', budget: 15000, status: '기획' },
+            { country: '우즈베키스탄', flag: '🇺🇿', lat: 41.3775, lng: 64.5853, category: 'Consulting', title: '우즈베키스탄 관개 컨설팅', period: '2023-2024', budget: 6800, status: '완료' },
+            { country: '캄보디아', flag: '🇰🇭', lat: 12.5657, lng: 104.9910, category: 'Consulting', title: '캄보디아 수자원 관리', period: '2024-2025', budget: 7200, status: '진행중' },
+            { country: '미얀마', flag: '🇲🇲', lat: 21.9162, lng: 95.9560, category: 'Consulting', title: '미얀마 농업 기술지원', period: '2023-2024', budget: 4500, status: '진행중' },
+        ];
 
-            // 사이드바 토글
-            const sidebarToggle = document.getElementById('sidebarToggle');
-            const sidebar = document.getElementById('sidebar');
+        let map, markersLayer;
+        let activeFilters = { consulting: true, oda: true };
 
-            sidebarToggle.addEventListener('click', function () {
-                sidebar.classList.toggle('open');
-            });
-
-            // 서브메뉴 토글
-            const submenuButtons = document.querySelectorAll('.nav-item.has-submenu > .nav-link');
-            submenuButtons.forEach(button => {
-                button.addEventListener('click', function () {
-                    const isExpanded = this.getAttribute('aria-expanded') === 'true';
-                    this.setAttribute('aria-expanded', !isExpanded);
-                });
-            });
-
-            // 지도 초기화
-            initMap();
-            loadSampleData();
-        });
-
-        let map = null;
-        let markersLayer = null;
-        let allProjects = [];
-
+        // 지도 초기화
         function initMap() {
-            try {
-                map = L.map('map', {
-                    center: [20, 100],
-                    zoom: 4,
-                    zoomControl: true
+            map = L.map('map', {
+                center: [20, 100],
+                zoom: 4,
+                zoomControl: true
+            });
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap',
+                maxZoom: 19
+            }).addTo(map);
+
+            markersLayer = L.layerGroup().addTo(map);
+
+            updateMap();
+            updateCountryList();
+            updateStats();
+        }
+
+        // 지도 업데이트
+        function updateMap() {
+            markersLayer.clearLayers();
+
+            const countryGroups = {};
+            projects.forEach(p => {
+                if (!activeFilters[p.category.toLowerCase()]) return;
+
+                if (!countryGroups[p.country]) {
+                    countryGroups[p.country] = { ...p, consulting: 0, oda: 0 };
+                }
+                countryGroups[p.country][p.category.toLowerCase() === 'consulting' ? 'consulting' : 'oda']++;
+            });
+
+            Object.values(countryGroups).forEach(country => {
+                const hasConsulting = country.consulting > 0;
+                const hasODA = country.oda > 0;
+                const markerClass = hasConsulting && hasODA ? 'mixed' : hasConsulting ? 'consulting' : 'oda';
+
+                const icon = L.divIcon({
+                    html: `<div class="marker-flag ${markerClass}">${country.flag}</div>`,
+                    className: 'custom-marker',
+                    iconSize: [40, 40],
+                    iconAnchor: [20, 20]
                 });
 
-                // OpenStreetMap 타일 레이어
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '© OpenStreetMap contributors',
-                    maxZoom: 19
-                }).addTo(map);
-
-                markersLayer = L.layerGroup().addTo(map);
-
-                console.log('지도 초기화 완료');
-            } catch (error) {
-                console.error('지도 초기화 실패:', error);
-                alert('지도를 로드할 수 없습니다. Leaflet 라이브러리를 확인하세요.');
-            }
-        }
-
-        function loadSampleData() {
-            // 샘플 데이터
-            allProjects = [
-                { name: '베트남', description: '캄보디아 관개시설 현대화', lat: 12.5657, lng: 104.9910, category: 'Consulting', budget: 8500 },
-                { name: '라오스', description: '라오스 농업용수 개발', lat: 17.9757, lng: 102.6331, category: 'ODA', budget: 5200 },
-                { name: '필리핀', description: '필리핀 스마트팜 구축', lat: 12.8797, lng: 121.7740, category: 'ODA', budget: 12000 },
-                { name: '우즈베키스탄', description: '우즈베키스탄 관개 컨설팅', lat: 41.3775, lng: 64.5853, category: 'Consulting', budget: 6800 },
-                { name: '미얀마', description: '미얀마 농업 기술지원', lat: 21.9162, lng: 95.9560, category: 'Consulting', budget: 4500 }
-            ];
-
-            updateMarkers();
-
-            // 필터 이벤트
-            document.getElementById('searchInput').addEventListener('input', applyFilters);
-            document.getElementById('filterConsulting').addEventListener('change', applyFilters);
-            document.getElementById('filterODA').addEventListener('change', applyFilters);
-            document.getElementById('filterPlanning').addEventListener('change', applyFilters);
-            document.getElementById('filterInProgress').addEventListener('change', applyFilters);
-            document.getElementById('filterCompleted').addEventListener('change', applyFilters);
-        }
-
-        function createMarker(project) {
-            const category = project.category || 'Consulting';
-            const iconClass = category === 'ODA' ? 'oda' : 'consulting';
-
-            const iconHtml = `
-                <div class="marker-pin ${iconClass}">
-                    <div class="marker-inner"></div>
-                </div>
-            `;
-
-            const customIcon = L.divIcon({
-                html: iconHtml,
-                className: 'custom-div-icon',
-                iconSize: [30, 30],
-                iconAnchor: [15, 30],
-                popupAnchor: [0, -30]
-            });
-
-            const marker = L.marker([project.lat, project.lng], { icon: customIcon });
-
-            const popupContent = `
-                <div class="popup-content">
-                    <div class="popup-title">${project.description}</div>
-                    <div class="popup-info"><strong>국가:</strong> ${project.name}</div>
-                    <div class="popup-info"><strong>카테고리:</strong> ${category}</div>
-                    ${project.budget ? `<div class="popup-budget"><strong>예산:</strong> ${formatCurrency(project.budget * 1000000)}</div>` : ''}
-                </div>
-            `;
-
-            marker.bindPopup(popupContent, { maxWidth: 300 });
-
-            return marker;
-        }
-
-        function updateMarkers() {
-            if (!markersLayer) return;
-
-            markersLayer.clearLayers();
-
-            allProjects.forEach(project => {
-                const marker = createMarker(project);
+                const marker = L.marker([country.lat, country.lng], { icon });
+                marker.on('click', () => showTimeline(country.country));
                 markersLayer.addLayer(marker);
             });
         }
 
-        function applyFilters() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const showConsulting = document.getElementById('filterConsulting').checked;
-            const showODA = document.getElementById('filterODA').checked;
+        // 국가 리스트 업데이트
+        function updateCountryList() {
+            const continents = {
+                '아시아': ['베트남', '라오스', '필리핀', '우즈베키스탄', '캄보디아', '미얀마']
+            };
 
-            markersLayer.clearLayers();
-
-            allProjects.forEach(project => {
-                const category = project.category || 'Consulting';
-
-                // 카테고리 필터
-                if (category === 'ODA' && !showODA) return;
-                if (category === 'Consulting' && !showConsulting) return;
-
-                // 검색 필터
-                if (searchTerm) {
-                    const searchable = [
-                        project.description || '',
-                        project.name || ''
-                    ].join(' ').toLowerCase();
-                    if (!searchable.includes(searchTerm)) return;
+            const countryData = {};
+            projects.forEach(p => {
+                if (!countryData[p.country]) {
+                    countryData[p.country] = { flag: p.flag, consulting: 0, oda: 0 };
                 }
-
-                const marker = createMarker(project);
-                markersLayer.addLayer(marker);
+                countryData[p.country][p.category.toLowerCase() === 'consulting' ? 'consulting' : 'oda']++;
             });
+
+            let html = '';
+            Object.entries(continents).forEach(([continent, countries]) => {
+                html += `<div class="continent-group">
+                    <div class="continent-title">${continent}</div>`;
+
+                countries.forEach(country => {
+                    const data = countryData[country];
+                    if (!data) return;
+
+                    const showConsulting = activeFilters.consulting && data.consulting > 0;
+                    const showODA = activeFilters.oda && data.oda > 0;
+
+                    if (!showConsulting && !showODA) return;
+
+                    html += `<div class="country-item" onclick="showTimeline('${country}')">
+                        <div class="country-flag">${data.flag}</div>
+                        <div class="country-name">${country}</div>
+                        <div class="project-badges">
+                            ${showConsulting ? `<div class="project-badge consulting">${data.consulting}</div>` : ''}
+                            ${showODA ? `<div class="project-badge oda">${data.oda}</div>` : ''}
+                        </div>
+                    </div>`;
+                });
+
+                html += '</div>';
+            });
+
+            document.getElementById('countryList').innerHTML = html;
         }
+
+        // 통계 업데이트
+        function updateStats() {
+            const stats = { consulting: 0, oda: 0 };
+            projects.forEach(p => {
+                stats[p.category.toLowerCase() === 'consulting' ? 'consulting' : 'oda']++;
+            });
+
+            document.getElementById('consultingCount').textContent = stats.consulting;
+            document.getElementById('odaCount').textContent = stats.oda;
+        }
+
+        // 타임라인 표시
+        function showTimeline(country) {
+            const countryProjects = projects.filter(p => p.country === country);
+            const countryFlag = countryProjects[0]?.flag || '';
+
+            document.getElementById('timelineCountry').innerHTML = `${countryFlag} ${country}`;
+
+            let html = '';
+            countryProjects.forEach((p, i) => {
+                html += `<div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-card ${p.category.toLowerCase()}">
+                        <div class="timeline-card-title">${p.title}</div>
+                        <div class="timeline-card-meta">
+                            <span class="timeline-chip period">${p.period}</span>
+                            <span class="timeline-chip budget">${formatCurrency(p.budget * 1000000)}</span>
+                            <span class="timeline-chip status">${p.status}</span>
+                        </div>
+                    </div>
+                </div>`;
+            });
+
+            document.getElementById('timelineItems').innerHTML = html;
+            document.getElementById('timelineModal').classList.add('active');
+        }
+
+        // 이벤트 리스너
+        document.addEventListener('DOMContentLoaded', () => {
+            initMap();
+
+            // 필터 탭
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const filter = tab.dataset.filter;
+                    activeFilters[filter] = !activeFilters[filter];
+                    tab.classList.toggle('active');
+                    updateMap();
+                    updateCountryList();
+                });
+            });
+
+            // 타임라인 닫기
+            document.getElementById('closeTimeline').addEventListener('click', () => {
+                document.getElementById('timelineModal').classList.remove('active');
+            });
+
+            document.getElementById('timelineModal').addEventListener('click', (e) => {
+                if (e.target.id === 'timelineModal') {
+                    document.getElementById('timelineModal').classList.remove('active');
+                }
+            });
+
+            // 메뉴 버튼 (모바일)
+            document.getElementById('menuBtn').addEventListener('click', () => {
+                document.getElementById('sidebar').classList.toggle('open');
+            });
+        });
     </script>
 </body>
 
