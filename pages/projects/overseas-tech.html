@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>해외기술용역 | GBMS</title>
+
+    <!-- KRDS Design System -->
+    <link rel="stylesheet" href="../../assets/css/variables.css">
+    <link rel="stylesheet" href="../../assets/css/base.css">
+    <link rel="stylesheet" href="../../assets/css/components.css">
+    <link rel="stylesheet" href="../../assets/css/pages.css">
+
+    <!-- Pretendard Font -->
+    <link rel="stylesheet" as="style" crossorigin
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+</head>
+
+<body class="app-layout">
+    <a href="#main-content" class="skip-nav">본문 바로가기</a>
+
+    <!-- 헤더 (dashboard.html과 동일) -->
+    <header class="app-header">
+        <div class="header-left">
+            <button class="sidebar-toggle" id="sidebarToggle" aria-label="메뉴 토글">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 12h18M3 6h18M3 18h18" />
+                </svg>
+            </button>
+            <h1 class="app-title">
+                <span style="font-size: 32px;">🌏</span>
+                GBMS
+            </h1>
+        </div>
+
+        <div class="header-right">
+            <button class="theme-toggle" id="themeToggle" aria-label="화면 모드 변경">🌙</button>
+            <div class="user-menu">
+                <button class="user-menu-button">
+                    <div class="user-avatar">관</div>
+                    <span id="userName" style="font-size: var(--font-size-sm);">관리자</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 사이드바 (dashboard.html과 동일) -->
+    <aside class="app-sidebar" id="sidebar">
+        <nav class="sidebar-nav" aria-label="주메뉴">
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="../../dashboard.html" class="nav-link">
+                        <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="7" height="7" />
+                            <rect x="14" y="3" width="7" height="7" />
+                            <rect x="14" y="14" width="7" height="7" />
+                            <rect x="3" y="14" width="7" height="7" />
+                        </svg>
+                        <span class="nav-text">대시보드</span>
+                    </a>
+                </li>
+                <li class="nav-item has-submenu">
+                    <button class="nav-link active" aria-expanded="true">
+                        <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path d="M9 11l3 3L22 4" />
+                            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+                        </svg>
+                        <span class="nav-text">사업관리</span>
+                        <svg class="nav-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path d="M9 18l6-6-6-6" />
+                        </svg>
+                    </button>
+                    <ul class="submenu" style="display: block;">
+                        <li><a href="overseas-tech.html" class="active">해외기술용역</a></li>
+                        <li><a href="oda-bilateral.html">ODA 양자</a></li>
+                        <li><a href="oda-multilateral.html">ODA 다자성양자</a></li>
+                        <li><a href="k-rice-belt.html">K-라이스벨트</a></li>
+                        <li><a href="overseas-investment.html">해외농업투자</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- 메인 콘텐츠 -->
+    <main id="main-content" class="app-main">
+        <div class="page-header">
+            <nav class="breadcrumb" aria-label="현재 위치">
+                <ol>
+                    <li><a href="../../dashboard.html">홈</a></li>
+                    <li><a href="#">사업관리</a></li>
+                    <li aria-current="page">해외기술용역</li>
+                </ol>
+            </nav>
+            <h2 class="page-title">해외기술용역</h2>
+        </div>
+
+        <div class="page-content">
+            <!-- 검색/필터 영역 -->
+            <section class="search-section card">
+                <h3 class="visually-hidden">검색 조건</h3>
+                <form class="search-form">
+                    <div class="form-group">
+                        <label for="project-year">사업연도</label>
+                        <select id="project-year">
+                            <option value="2026">2026</option>
+                            <option value="2025">2025</option>
+                            <option value="2024">2024</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="project-country">대상국가</label>
+                        <select id="project-country">
+                            <option value="">전체</option>
+                            <option value="VN">베트남</option>
+                            <option value="LA">라오스</option>
+                            <option value="KH">캄보디아</option>
+                            <option value="MM">미얀마</option>
+                            <option value="PH">필리핀</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="project-status">진행상태</label>
+                        <select id="project-status">
+                            <option value="">전체</option>
+                            <option value="planning">기획중</option>
+                            <option value="bidding">입찰중</option>
+                            <option value="ongoing">수행중</option>
+                            <option value="completed">완료</option>
+                        </select>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">검색</button>
+                        <button type="reset" class="btn btn-secondary">초기화</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- 통계 카드 -->
+            <section class="stats-grid">
+                <article class="stat-card card">
+                    <div class="stat-icon" style="background: var(--color-primary-100)">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary-600)"
+                            stroke-width="2">
+                            <path d="M9 11l3 3L22 4" />
+                            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value">24</span>
+                        <span class="stat-label">총 사업 수</span>
+                    </div>
+                </article>
+
+                <article class="stat-card card">
+                    <div class="stat-icon" style="background: var(--color-success-100)">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--color-success-500)"
+                            stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
+                            <path d="M22 4L12 14.01l-3-3" />
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value">18</span>
+                        <span class="stat-label">수행중</span>
+                    </div>
+                </article>
+
+                <article class="stat-card card">
+                    <div class="stat-icon" style="background: var(--color-warning-100)">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#856404" stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M12 6v6l4 2" />
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value">₩452억</span>
+                        <span class="stat-label">총 사업비</span>
+                    </div>
+                </article>
+
+                <article class="stat-card card">
+                    <div class="stat-icon" style="background: var(--color-info-100)">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0c5460" stroke-width="2">
+                            <path d="M18 20V10M12 20V4M6 20v-6" />
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value">67.5%</span>
+                        <span class="stat-label">예산 집행률</span>
+                    </div>
+                </article>
+            </section>
+
+            <!-- 사업 목록 테이블 -->
+            <section class="card">
+                <header class="section-header">
+                    <h3>사업 목록</h3>
+                    <div class="section-actions">
+                        <button class="btn btn-primary" id="newProjectBtn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M12 5v14M5 12h14" />
+                            </svg>
+                            신규 등록
+                        </button>
+                        <button class="btn btn-secondary">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" />
+                            </svg>
+                            엑셀 다운로드
+                        </button>
+                    </div>
+                </header>
+
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">
+                                    <input type="checkbox" id="select-all" aria-label="전체 선택">
+                                </th>
+                                <th scope="col">사업번호</th>
+                                <th scope="col">사업명</th>
+                                <th scope="col">대상국가</th>
+                                <th scope="col">사업기간</th>
+                                <th scope="col">사업비(백만원)</th>
+                                <th scope="col">진행률</th>
+                                <th scope="col">상태</th>
+                                <th scope="col">관리</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="checkbox" aria-label="선택"></td>
+                                <td>2024-OT-001</td>
+                                <td><a href="#">캄보디아 관개시설 현대화 사업</a></td>
+                                <td>🇰🇭 캄보디아</td>
+                                <td>2024.03 ~ 2025.12</td>
+                                <td>8,500</td>
+                                <td>
+                                    <div class="progress" style="width: 80px;">
+                                        <div class="progress-bar success" style="width: 85%"></div>
+                                    </div>
+                                    <small>85%</small>
+                                </td>
+                                <td><span class="badge badge-success">수행중</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline">상세</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" aria-label="선택"></td>
+                                <td>2024-OT-002</td>
+                                <td><a href="#">우즈베키스탄 농업용수관리 컨설팅</a></td>
+                                <td>🇺🇿 우즈베키스탄</td>
+                                <td>2024.01 ~ 2024.12</td>
+                                <td>5,200</td>
+                                <td>
+                                    <div class="progress" style="width: 80px;">
+                                        <div class="progress-bar success" style="width: 100%"></div>
+                                    </div>
+                                    <small>100%</small>
+                                </td>
+                                <td><span class="badge badge-secondary">완료</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline">상세</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" aria-label="선택"></td>
+                                <td>2025-OT-001</td>
+                                <td><a href="#">베트남 스마트농업 기술지원</a></td>
+                                <td>🇻🇳 베트남</td>
+                                <td>2025.06 ~ 2026.05</td>
+                                <td>12,000</td>
+                                <td>
+                                    <div class="progress" style="width: 80px;">
+                                        <div class="progress-bar" style="width: 35%"></div>
+                                    </div>
+                                    <small>35%</small>
+                                </td>
+                                <td><span class="badge badge-success">수행중</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline">상세</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 페이지네이션 -->
+                <nav class="pagination" aria-label="페이지 네비게이션">
+                    <button class="page-btn" aria-label="이전 페이지" disabled>&lt;</button>
+                    <button class="page-btn active" aria-current="page">1</button>
+                    <button class="page-btn">2</button>
+                    <button class="page-btn">3</button>
+                    <button class="page-btn" aria-label="다음 페이지">&gt;</button>
+                </nav>
+            </section>
+        </div>
+    </main>
+
+    <script src="../../assets/js/common.js"></script>
+    <script src="../../assets/js/api.js"></script>
+    <script src="../../assets/js/components/modal.js"></script>
+    <script src="../../assets/js/components/toast.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 인증 확인
+            if (!checkAuth()) {
+                window.location.href = '../../index.html';
+                return;
+            }
+
+            // 사이드바 토글
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebar = document.getElementById('sidebar');
+
+            sidebarToggle.addEventListener('click', function () {
+                sidebar.classList.toggle('open');
+            });
+
+            // 신규 등록 버튼
+            const newProjectBtn = document.getElementById('newProjectBtn');
+            newProjectBtn.addEventListener('click', function () {
+                const modal = new Modal();
+                modal.open(
+                    `<p>신규 사업 등록 기능은 준비 중입니다.</p>`,
+                    '신규 사업 등록',
+                    {
+                        footer: '<button class="btn btn-primary" onclick="this.closest(\'.modal-overlay\').remove()">확인</button>'
+                    }
+                );
+            });
+
+            // 검색 폼
+            const searchForm = document.querySelector('.search-form');
+            searchForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                Toast.success('검색 기능은 준비 중입니다.');
+            });
+        });
+    </script>
+</body>
+
+</html>

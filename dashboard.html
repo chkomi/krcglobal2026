@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="한국농어촌공사 글로벌사업처 해외사업관리시스템 - 대시보드">
+    <title>대시보드 | GBMS</title>
+
+    <!-- KRDS Design System -->
+    <link rel="stylesheet" href="assets/css/variables.css">
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/pages.css">
+
+    <!-- Pretendard Font -->
+    <link rel="stylesheet" as="style" crossorigin
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+</head>
+
+<body class="app-layout">
+    <a href="#main-content" class="skip-nav">본문 바로가기</a>
+
+    <!-- 헤더 -->
+    <header class="app-header">
+        <div class="header-left">
+            <button class="sidebar-toggle" id="sidebarToggle" aria-label="메뉴 토글" aria-expanded="false"
+                aria-controls="sidebar">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 12h18M3 6h18M3 18h18" />
+                </svg>
+            </button>
+            <h1 class="app-title">
+                <span style="font-size: 32px;">🌏</span>
+                GBMS
+            </h1>
+        </div>
+
+        <div class="header-right">
+            <button class="theme-toggle" id="themeToggle" aria-label="화면 모드 변경">
+                🌙
+            </button>
+            <div class="user-menu">
+                <button class="user-menu-button" id="userMenuButton" aria-haspopup="true" aria-expanded="false">
+                    <div class="user-avatar">관</div>
+                    <span id="userName"
+                        style="font-size: var(--font-size-sm); color: var(--color-neutral-700);">관리자</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 사이드바 -->
+    <aside class="app-sidebar" id="sidebar">
+        <nav class="sidebar-nav" aria-label="주메뉴">
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="dashboard.html" class="nav-link active">
+                        <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="7" height="7" />
+                            <rect x="14" y="3" width="7" height="7" />
+                            <rect x="14" y="14" width="7" height="7" />
+                            <rect x="3" y="14" width="7" height="7" />
+                        </svg>
+                        <span class="nav-text">대시보드</span>
+                    </a>
+                </li>
+
+                <li class="nav-item has-submenu">
+                    <button class="nav-link" aria-expanded="false">
+                        <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path d="M9 11l3 3L22 4" />
+                            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+                        </svg>
+                        <span class="nav-text">사업관리</span>
+                        <svg class="nav-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path d="M9 18l6-6-6-6" />
+                        </svg>
+                    </button>
+                    <ul class="submenu">
+                        <li><a href="pages/projects/overseas-tech.html">해외기술용역</a></li>
+                        <li><a href="pages/projects/oda-bilateral.html">ODA 양자</a></li>
+                        <li><a href="pages/projects/oda-multilateral.html">ODA 다자성양자</a></li>
+                        <li><a href="pages/projects/k-rice-belt.html">K-라이스벨트</a></li>
+                        <li><a href="pages/projects/overseas-investment.html">해외농업투자</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item">
+                    <a href="pages/budget/budget-overview.html" class="nav-link">
+                        <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M12 6v6l4 2" />
+                        </svg>
+                        <span class="nav-text">예산/정산</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="pages/documents/documents.html" class="nav-link">
+                        <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                            <path d="M14 2v6h6" />
+                        </svg>
+                        <span class="nav-text">문서관리</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="pages/offices/offices.html" class="nav-link">
+                        <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                            <path d="M9 22V12h6v10" />
+                        </svg>
+                        <span class="nav-text">해외사무소</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="pages/personnel/personnel.html" class="nav-link">
+                        <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                            <circle cx="9" cy="7" r="4" />
+                            <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
+                        </svg>
+                        <span class="nav-text">인력관리</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="pages/performance/performance.html" class="nav-link">
+                        <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path d="M18 20V10M12 20V4M6 20v-6" />
+                        </svg>
+                        <span class="nav-text">성과관리</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="frontend/gis.html" class="nav-link">
+                        <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="10" r="3" />
+                            <path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 10-16 0c0 3 2.7 6.9 8 11.7z" />
+                        </svg>
+                        <span class="nav-text">GIS 지도</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- 메인 콘텐츠 -->
+    <main id="main-content" class="app-main">
+        <div class="page-header">
+            <nav class="breadcrumb" aria-label="현재 위치">
+                <ol>
+                    <li><a href="dashboard.html">홈</a></li>
+                    <li aria-current="page">대시보드</li>
+                </ol>
+            </nav>
+            <h2 class="page-title">대시보드</h2>
+        </div>
+
+        <div class="page-content">
+            <!-- 통계 카드 -->
+            <section class="stats-grid">
+                <article class="stat-card card">
+                    <div class="stat-icon" style="background: var(--color-primary-100)">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary-600)"
+                            stroke-width="2">
+                            <path d="M9 11l3 3L22 4" />
+                            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value">32</span>
+                        <span class="stat-label">진행중인 사업</span>
+                    </div>
+                </article>
+
+                <article class="stat-card card">
+                    <div class="stat-icon" style="background: var(--color-success-100)">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--color-success-500)"
+                            stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M12 6v6l4 2" />
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value">₩1,245억</span>
+                        <span class="stat-label">총 사업예산</span>
+                    </div>
+                </article>
+
+                <article class="stat-card card">
+                    <div class="stat-icon" style="background: var(--color-warning-100)">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#856404" stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M2 12h20" />
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value">18</span>
+                        <span class="stat-label">사업대상국</span>
+                    </div>
+                </article>
+
+                <article class="stat-card card">
+                    <div class="stat-icon" style="background: var(--color-info-100)">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0c5460" stroke-width="2">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                            <path d="M9 22V12h6v10" />
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-value">6</span>
+                        <span class="stat-label">해외사무소</span>
+                    </div>
+                </article>
+            </section>
+
+            <!-- 최근 사업 현황 -->
+            <section class="card">
+                <header class="section-header">
+                    <h3>최근 사업 현황</h3>
+                    <div class="section-actions">
+                        <a href="pages/projects/overseas-tech.html" class="btn btn-outline btn-sm">전체보기</a>
+                    </div>
+                </header>
+
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">사업명</th>
+                                <th scope="col">유형</th>
+                                <th scope="col">국가</th>
+                                <th scope="col">담당부서</th>
+                                <th scope="col">진행률</th>
+                                <th scope="col">상태</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a href="#">캄보디아 관개시설 현대화 사업</a></td>
+                                <td><span class="badge badge-primary">해외기술용역</span></td>
+                                <td>🇰🇭 캄보디아</td>
+                                <td>글로벌사업부</td>
+                                <td>
+                                    <div class="progress" style="width: 100px;">
+                                        <div class="progress-bar success" style="width: 85%"></div>
+                                    </div>
+                                    <small>85%</small>
+                                </td>
+                                <td><span class="badge badge-success">진행중</span></td>
+                            </tr>
+                            <tr>
+                                <td><a href="#">베트남 스마트팜 구축 ODA</a></td>
+                                <td><span class="badge badge-info">ODA 양자</span></td>
+                                <td>🇻🇳 베트남</td>
+                                <td>농식품국제개발협력센터</td>
+                                <td>
+                                    <div class="progress" style="width: 100px;">
+                                        <div class="progress-bar" style="width: 45%"></div>
+                                    </div>
+                                    <small>45%</small>
+                                </td>
+                                <td><span class="badge badge-success">진행중</span></td>
+                            </tr>
+                            <tr>
+                                <td><a href="#">필리핀 K-라이스벨트 시범사업</a></td>
+                                <td><span class="badge badge-warning">K-라이스벨트</span></td>
+                                <td>🇵🇭 필리핀</td>
+                                <td>농식품국제개발협력센터</td>
+                                <td>
+                                    <div class="progress" style="width: 100px;">
+                                        <div class="progress-bar" style="width: 20%"></div>
+                                    </div>
+                                    <small>20%</small>
+                                </td>
+                                <td><span class="badge badge-info">기획</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="assets/js/common.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Check authentication
+            const userInfo = localStorage.getItem('userInfo') || sessionStorage.getItem('userInfo');
+            if (!userInfo) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            const user = JSON.parse(userInfo);
+            document.getElementById('userName').textContent = user.userName;
+
+            // Sidebar toggle
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebar = document.getElementById('sidebar');
+
+            sidebarToggle.addEventListener('click', function () {
+                sidebar.classList.toggle('open');
+                const isOpen = sidebar.classList.contains('open');
+                sidebarToggle.setAttribute('aria-expanded', isOpen);
+            });
+
+            // Submenu toggle
+            const submenuButtons = document.querySelectorAll('.nav-item.has-submenu > .nav-link');
+            submenuButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const isExpanded = this.getAttribute('aria-expanded') === 'true';
+                    this.setAttribute('aria-expanded', !isExpanded);
+                });
+            });
+
+            // Theme toggle
+            const themeToggle = document.getElementById('themeToggle');
+            themeToggle.addEventListener('click', function () {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+                localStorage.setItem('theme', newTheme);
+            });
+
+            // Load saved theme
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+                themeToggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="한국농어촌공사 글로벌사업처 해외사업관리시스템">
+    <title>GBMS - 로그인 | 글로벌사업처</title>
+
+    <!-- KRDS Design System -->
+    <link rel="stylesheet" href="assets/css/variables.css">
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/pages.css">
+
+    <!-- Pretendard Font -->
+    <link rel="stylesheet" as="style" crossorigin
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+</head>
+
+<body>
+    <a href="#main-content" class="skip-nav">본문 바로가기</a>
+
+    <main id="main-content" class="login-container">
+        <div class="login-card card">
+            <div class="login-header">
+                <div class="login-logo">
+                    <span style="font-size: 48px;">🌏</span>
+                </div>
+                <h1 class="login-title">GBMS</h1>
+                <p class="login-subtitle">글로벌사업처 해외사업관리시스템</p>
+            </div>
+
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="userId">사번 / 아이디</label>
+                    <input type="text" id="userId" name="userId" placeholder="사번 또는 아이디를 입력하세요" autocomplete="username"
+                        required aria-required="true">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">비밀번호</label>
+                    <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요"
+                        autocomplete="current-password" required aria-required="true">
+                </div>
+
+                <div class="form-group" style="flex-direction: row; align-items: center;">
+                    <input type="checkbox" id="rememberMe" name="rememberMe">
+                    <label for="rememberMe" style="margin-bottom: 0; margin-left: 8px; cursor: pointer;">로그인 상태
+                        유지</label>
+                </div>
+
+                <div id="loginError" class="alert alert-error" style="display: none;" role="alert">
+                    <span>⚠️</span>
+                    <span id="loginErrorMessage">아이디 또는 비밀번호가 올바르지 않습니다.</span>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg" id="loginBtn" style="width: 100%;">
+                    <span id="loginBtnText">로그인</span>
+                    <span id="loginBtnLoading" style="display: none;">
+                        로그인 중...
+                    </span>
+                </button>
+            </form>
+
+            <div class="login-footer" style="margin-top: var(--spacing-6); text-align: center;">
+                <a href="#" style="font-size: var(--font-size-sm); color: var(--color-neutral-600);">비밀번호를 잊으셨나요?</a>
+                <p
+                    style="margin-top: var(--spacing-4); font-size: var(--font-size-sm); color: var(--color-neutral-600);">
+                    문의: 글로벌농업개발부 <strong>내선 1234</strong>
+                </p>
+                <p
+                    style="margin-top: var(--spacing-8); font-size: var(--font-size-xs); color: var(--color-neutral-500);">
+                    © 2024-2026 한국농어촌공사 글로벌사업처
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <script src="assets/js/common.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script>
+        // Initialize login page
+        document.addEventListener('DOMContentLoaded', function () {
+            const loginForm = document.getElementById('loginForm');
+            const loginBtn = document.getElementById('loginBtn');
+            const loginBtnText = document.getElementById('loginBtnText');
+            const loginBtnLoading = document.getElementById('loginBtnLoading');
+            const loginError = document.getElementById('loginError');
+
+            loginForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+
+                const userId = document.getElementById('userId').value;
+                const password = document.getElementById('password').value;
+                const rememberMe = document.getElementById('rememberMe').checked;
+
+                // Show loading state
+                loginBtn.disabled = true;
+                loginBtnText.style.display = 'none';
+                loginBtnLoading.style.display = 'inline';
+                loginError.style.display = 'none';
+
+                try {
+                    // Simulate API call (replace with actual API call)
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+
+                    // For demo purposes, accept any credentials
+                    if (userId && password) {
+                        // Store user info
+                        const userInfo = {
+                            userId: userId,
+                            userName: '관리자',
+                            department: '글로벌농업개발부',
+                            loginTime: new Date().toISOString()
+                        };
+
+                        if (rememberMe) {
+                            localStorage.setItem('userInfo', JSON.stringify(userInfo));
+                        } else {
+                            sessionStorage.setItem('userInfo', JSON.stringify(userInfo));
+                        }
+
+                        // Redirect to dashboard
+                        window.location.href = 'dashboard.html';
+                    } else {
+                        throw new Error('Invalid credentials');
+                    }
+                } catch (error) {
+                    // Show error
+                    loginError.style.display = 'flex';
+                    loginError.style.alignItems = 'center';
+                    loginError.style.gap = 'var(--spacing-2)';
+                    loginError.style.padding = 'var(--spacing-3)';
+                    loginError.style.borderRadius = 'var(--radius-md)';
+                    loginError.style.backgroundColor = 'var(--color-error-100)';
+                    loginError.style.color = 'var(--color-error-500)';
+                    loginError.style.fontSize = 'var(--font-size-sm)';
+
+                    // Reset button state
+                    loginBtn.disabled = false;
+                    loginBtnText.style.display = 'inline';
+                    loginBtnLoading.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
