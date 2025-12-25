@@ -1,0 +1,45 @@
+==========================================
+GIS API 데이터 소스 요약
+==========================================
+
+[데이터 소스]
+- SQLite 데이터베이스: backend/database/gbms.db
+- 테이블: projects
+- 모델: Project (backend/models/__init__.py)
+
+[API 엔드포인트]
+- URL: GET /api/gis/projects
+- 파일: backend/routes/gis.py
+- 함수: get_gis_projects()
+
+[데이터 흐름]
+1. 데이터베이스에서 프로젝트 조회
+   - latitude, longitude가 있는 프로젝트만
+   - 좌표가 0이 아닌 프로젝트만
+
+2. Project 모델 → GIS 형식으로 변환
+   - KRC 지도 형식과 호환
+
+3. JSON 응답 반환
+   - 프론트엔드에서 마커 생성
+
+[현재 문제]
+- 데이터베이스에 프로젝트는 있지만 좌표가 없을 수 있음
+- 좌표가 없으면 마커가 표시되지 않음
+
+[해결 방법]
+1. KRC JSON 파일에서 좌표 가져오기:
+   python backend/scripts/import_krc_coordinates.py
+
+2. 수동으로 좌표 입력:
+   - 관리자 페이지에서 프로젝트 수정
+   - 또는 데이터베이스에서 직접 입력
+
+3. 샘플 데이터에 좌표 추가:
+   - init_db.py 실행 시 자동으로 일부 좌표 추가됨
+
+[확인 방법]
+브라우저 콘솔에서:
+- "받은 프로젝트 수: X" 확인
+- "좌표가 있는 프로젝트 수: X" 확인
+

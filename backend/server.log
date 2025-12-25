@@ -1,0 +1,74 @@
+2025-12-23 15:10:55,816 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2025-12-23 15:10:55,817 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+2025-12-23 15:10:55,817 INFO sqlalchemy.engine.Engine [raw sql] ()
+2025-12-23 15:10:55,819 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("projects")
+2025-12-23 15:10:55,819 INFO sqlalchemy.engine.Engine [raw sql] ()
+2025-12-23 15:10:55,819 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("project_phases")
+2025-12-23 15:10:55,819 INFO sqlalchemy.engine.Engine [raw sql] ()
+2025-12-23 15:10:55,819 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("budgets")
+2025-12-23 15:10:55,819 INFO sqlalchemy.engine.Engine [raw sql] ()
+2025-12-23 15:10:55,819 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("budget_executions")
+2025-12-23 15:10:55,819 INFO sqlalchemy.engine.Engine [raw sql] ()
+2025-12-23 15:10:55,819 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("documents")
+2025-12-23 15:10:55,819 INFO sqlalchemy.engine.Engine [raw sql] ()
+2025-12-23 15:10:55,819 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("offices")
+2025-12-23 15:10:55,819 INFO sqlalchemy.engine.Engine [raw sql] ()
+2025-12-23 15:10:55,819 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("project_personnel")
+2025-12-23 15:10:55,819 INFO sqlalchemy.engine.Engine [raw sql] ()
+2025-12-23 15:10:55,819 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("activity_logs")
+2025-12-23 15:10:55,819 INFO sqlalchemy.engine.Engine [raw sql] ()
+2025-12-23 15:10:55,819 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("consulting_projects")
+2025-12-23 15:10:55,819 INFO sqlalchemy.engine.Engine [raw sql] ()
+2025-12-23 15:10:55,820 INFO sqlalchemy.engine.Engine COMMIT
+2025-12-23 15:10:55,820 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2025-12-23 15:10:55,820 INFO sqlalchemy.engine.Engine PRAGMA journal_mode=WAL
+2025-12-23 15:10:55,820 INFO sqlalchemy.engine.Engine [generated in 0.00006s] ()
+2025-12-23 15:10:55,820 INFO sqlalchemy.engine.Engine PRAGMA synchronous=NORMAL
+2025-12-23 15:10:55,820 INFO sqlalchemy.engine.Engine [generated in 0.00003s] ()
+2025-12-23 15:10:55,820 INFO sqlalchemy.engine.Engine PRAGMA cache_size=-64000
+2025-12-23 15:10:55,820 INFO sqlalchemy.engine.Engine [generated in 0.00002s] ()
+2025-12-23 15:10:55,820 INFO sqlalchemy.engine.Engine PRAGMA busy_timeout=30000
+2025-12-23 15:10:55,820 INFO sqlalchemy.engine.Engine [generated in 0.00002s] ()
+2025-12-23 15:10:55,820 INFO sqlalchemy.engine.Engine COMMIT
+ * Serving Flask app 'app'
+ * Debug mode: on
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://172.19.198.176:5001
+[33mPress CTRL+C to quit[0m
+ * Restarting with stat
+2025-12-23 15:10:56,286 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2025-12-23 15:10:56,287 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("users")
+2025-12-23 15:10:56,287 INFO sqlalchemy.engine.Engine [raw sql] ()
+2025-12-23 15:10:56,288 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("projects")
+2025-12-23 15:10:56,288 INFO sqlalchemy.engine.Engine [raw sql] ()
+2025-12-23 15:10:56,288 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("project_phases")
+2025-12-23 15:10:56,288 INFO sqlalchemy.engine.Engine [raw sql] ()
+2025-12-23 15:10:56,288 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("budgets")
+2025-12-23 15:10:56,288 INFO sqlalchemy.engine.Engine [raw sql] ()
+2025-12-23 15:10:56,288 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("budget_executions")
+2025-12-23 15:10:56,288 INFO sqlalchemy.engine.Engine [raw sql] ()
+2025-12-23 15:10:56,288 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("documents")
+2025-12-23 15:10:56,288 INFO sqlalchemy.engine.Engine [raw sql] ()
+2025-12-23 15:10:56,288 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("offices")
+2025-12-23 15:10:56,288 INFO sqlalchemy.engine.Engine [raw sql] ()
+2025-12-23 15:10:56,288 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("project_personnel")
+2025-12-23 15:10:56,288 INFO sqlalchemy.engine.Engine [raw sql] ()
+2025-12-23 15:10:56,288 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("activity_logs")
+2025-12-23 15:10:56,288 INFO sqlalchemy.engine.Engine [raw sql] ()
+2025-12-23 15:10:56,288 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("consulting_projects")
+2025-12-23 15:10:56,288 INFO sqlalchemy.engine.Engine [raw sql] ()
+2025-12-23 15:10:56,288 INFO sqlalchemy.engine.Engine COMMIT
+2025-12-23 15:10:56,289 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2025-12-23 15:10:56,289 INFO sqlalchemy.engine.Engine PRAGMA journal_mode=WAL
+2025-12-23 15:10:56,289 INFO sqlalchemy.engine.Engine [generated in 0.00007s] ()
+2025-12-23 15:10:56,289 INFO sqlalchemy.engine.Engine PRAGMA synchronous=NORMAL
+2025-12-23 15:10:56,289 INFO sqlalchemy.engine.Engine [generated in 0.00003s] ()
+2025-12-23 15:10:56,289 INFO sqlalchemy.engine.Engine PRAGMA cache_size=-64000
+2025-12-23 15:10:56,289 INFO sqlalchemy.engine.Engine [generated in 0.00003s] ()
+2025-12-23 15:10:56,289 INFO sqlalchemy.engine.Engine PRAGMA busy_timeout=30000
+2025-12-23 15:10:56,289 INFO sqlalchemy.engine.Engine [generated in 0.00002s] ()
+2025-12-23 15:10:56,289 INFO sqlalchemy.engine.Engine COMMIT
+ * Debugger is active!
+ * Debugger PIN: 144-622-816

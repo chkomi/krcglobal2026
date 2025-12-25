@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="한국농어촌공사 글로벌사업처 해외사업관리시스템 - 대시보드">
+    <title>대시보드 | GBMS</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">🌏</div>
+                <span class="sidebar-title">GBMS</span>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">메인</div>
+                    <a href="dashboard.html" class="nav-item active">
+                        <span class="nav-icon">📊</span>
+                        <span class="nav-text">대시보드</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">사업관리</div>
+                    <a href="consulting.html" class="nav-item">
+                        <span class="nav-icon">🔧</span>
+                        <span class="nav-text">해외기술용역</span>
+                    </a>
+                    <a href="pages/projects/oda.html" class="nav-item">
+                        <span class="nav-icon">🤝</span>
+                        <span class="nav-text">국제농업협력(ODA)</span>
+                    </a>
+                    <a href="pages/projects/investment.html" class="nav-item">
+                        <span class="nav-icon">🌱</span>
+                        <span class="nav-text">해외농업투자</span>
+                    </a>
+                    <a href="pages/projects/loan.html" class="nav-item">
+                        <span class="nav-icon">💳</span>
+                        <span class="nav-text">융자·보조사업</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">관리</div>
+                    <a href="pages/budget/index.html" class="nav-item">
+                        <span class="nav-icon">💰</span>
+                        <span class="nav-text">예산/정산</span>
+                    </a>
+                    <a href="pages/documents/index.html" class="nav-item">
+                        <span class="nav-icon">📄</span>
+                        <span class="nav-text">문서관리</span>
+                    </a>
+                    <a href="pages/offices/index.html" class="nav-item">
+                        <span class="nav-icon">🏢</span>
+                        <span class="nav-text">해외사무소</span>
+                    </a>
+                    <a href="pages/hr/index.html" class="nav-item">
+                        <span class="nav-icon">👥</span>
+                        <span class="nav-text">인력관리</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">GIS</div>
+                    <a href="gis.html" class="nav-item">
+                        <span class="nav-icon">🗺️</span>
+                        <span class="nav-text">GIS 지도</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">분석</div>
+                    <a href="pages/performance/index.html" class="nav-item">
+                        <span class="nav-icon">📈</span>
+                        <span class="nav-text">성과관리</span>
+                    </a>
+                    <a href="pages/reports/index.html" class="nav-item">
+                        <span class="nav-icon">📋</span>
+                        <span class="nav-text">보고서</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">시스템</div>
+                    <a href="pages/admin/index.html" class="nav-item">
+                        <span class="nav-icon">⚙️</span>
+                        <span class="nav-text">시스템관리</span>
+                    </a>
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="sidebar-toggle-btn" id="sidebarToggle">
+                    <span>◀</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <button class="header-toggle" id="headerToggle">
+                        <span>☰</span>
+                    </button>
+                    <h1 class="header-title">대시보드</h1>
+                </div>
+                <div class="header-right">
+                    <div class="header-search">
+                        <span class="header-search-icon">🔍</span>
+                        <input type="text" placeholder="사업명, 국가, 문서 검색...">
+                    </div>
+                    <div class="header-notifications dropdown" id="notificationDropdown">
+                        <button class="btn btn-icon btn-ghost">
+                            <span>🔔</span>
+                            <span class="notification-badge" id="notificationCount">3</span>
+                        </button>
+                        <div class="dropdown-menu notification-menu">
+                            <div class="notification-header">
+                                <strong>알림</strong>
+                                <a href="#">모두 읽음</a>
+                            </div>
+                            <div class="notification-list">
+                                <div class="notification-item unread">
+                                    <span class="notification-icon">📋</span>
+                                    <div class="notification-content">
+                                        <p>캄보디아 관개시설 현대화 사업 보고서 제출 마감</p>
+                                        <small>1시간 전</small>
+                                    </div>
+                                </div>
+                                <div class="notification-item unread">
+                                    <span class="notification-icon">💰</span>
+                                    <div class="notification-content">
+                                        <p>2024년 4분기 예산 집행률 점검 필요</p>
+                                        <small>3시간 전</small>
+                                    </div>
+                                </div>
+                                <div class="notification-item">
+                                    <span class="notification-icon">✅</span>
+                                    <div class="notification-content">
+                                        <p>베트남 ODA 사업 착수보고 승인 완료</p>
+                                        <small>어제</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="header-user dropdown" id="userDropdown">
+                        <div class="user-avatar" id="userAvatar">관</div>
+                        <div class="user-info">
+                            <span class="user-name" id="userName">관리자</span>
+                            <span class="user-role" id="userDept">글로벌농업개발부</span>
+                        </div>
+                        <div class="dropdown-menu user-menu">
+                            <a href="#" class="dropdown-item">
+                                <span>👤</span> 프로필
+                            </a>
+                            <a href="#" class="dropdown-item">
+                                <span>⚙️</span> 설정
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item" id="logoutBtn">
+                                <span>🚪</span> 로그아웃
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <div class="page-content">
+                <!-- Welcome Section -->
+                <div class="welcome-section mb-6">
+                    <h2>안녕하세요, <span id="welcomeName">관리자</span>님! 👋</h2>
+                    <p class="text-muted">오늘의 해외사업 현황을 확인하세요.</p>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-4 mb-8">
+                    <div class="stat-card">
+                        <div class="stat-icon blue">📋</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="totalProjects">32</div>
+                            <div class="stat-label">진행중인 사업</div>
+                            <div class="stat-change up">
+                                <span>↑</span> 전년대비 +5건
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green">💰</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="totalBudget">1,245억</div>
+                            <div class="stat-label">총 사업예산</div>
+                            <div class="stat-change">
+                                <span class="text-muted">집행률 68.5%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon orange">🌍</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="totalCountries">18</div>
+                            <div class="stat-label">사업대상국</div>
+                            <div class="stat-change up">
+                                <span>↑</span> 신규 2개국 추가
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon purple">🏢</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="totalOffices">6</div>
+                            <div class="stat-label">해외사무소</div>
+                            <div class="stat-change">
+                                <span class="text-muted">정상 운영중</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row -->
+                <div class="grid grid-cols-2 mb-8">
+                    <!-- Projects by Type -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">사업유형별 현황</h3>
+                            <select class="form-control" style="width: auto;">
+                                <option>2024년</option>
+                                <option>2023년</option>
+                            </select>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container" id="projectTypeChart">
+                                <!-- Chart placeholder -->
+                                <div class="chart-bars">
+                                    <div class="chart-bar-item">
+                                        <div class="bar-label">해외기술용역</div>
+                                        <div class="bar-track">
+                                            <div class="bar-fill" style="width: 75%; background: var(--color-primary);">
+                                            </div>
+                                        </div>
+                                        <div class="bar-value">12건</div>
+                                    </div>
+                                    <div class="chart-bar-item">
+                                        <div class="bar-label">ODA 양자</div>
+                                        <div class="bar-track">
+                                            <div class="bar-fill"
+                                                style="width: 50%; background: var(--color-secondary);"></div>
+                                        </div>
+                                        <div class="bar-value">8건</div>
+                                    </div>
+                                    <div class="chart-bar-item">
+                                        <div class="bar-label">ODA 다자성양자</div>
+                                        <div class="bar-track">
+                                            <div class="bar-fill"
+                                                style="width: 37.5%; background: var(--color-accent);"></div>
+                                        </div>
+                                        <div class="bar-value">6건</div>
+                                    </div>
+                                    <div class="chart-bar-item">
+                                        <div class="bar-label">K-라이스벨트</div>
+                                        <div class="bar-track">
+                                            <div class="bar-fill" style="width: 25%; background: #6f42c1;"></div>
+                                        </div>
+                                        <div class="bar-value">4건</div>
+                                    </div>
+                                    <div class="chart-bar-item">
+                                        <div class="bar-label">융자·보조</div>
+                                        <div class="bar-track">
+                                            <div class="bar-fill" style="width: 12.5%; background: #17a2b8;"></div>
+                                        </div>
+                                        <div class="bar-value">2건</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Budget Execution -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">부서별 예산집행률</h3>
+                            <span class="badge badge-info">2024년 12월</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="budget-items">
+                                <div class="budget-item">
+                                    <div class="budget-header">
+                                        <span class="budget-dept">글로벌농업개발부</span>
+                                        <span class="budget-percent">72.5%</span>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar success" style="width: 72.5%;"></div>
+                                    </div>
+                                    <div class="budget-detail">
+                                        <span>집행: 145억</span>
+                                        <span>예산: 200억</span>
+                                    </div>
+                                </div>
+                                <div class="budget-item">
+                                    <div class="budget-header">
+                                        <span class="budget-dept">글로벌사업부</span>
+                                        <span class="budget-percent">65.3%</span>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar" style="width: 65.3%;"></div>
+                                    </div>
+                                    <div class="budget-detail">
+                                        <span>집행: 326억</span>
+                                        <span>예산: 500억</span>
+                                    </div>
+                                </div>
+                                <div class="budget-item">
+                                    <div class="budget-header">
+                                        <span class="budget-dept">농식품국제개발협력센터</span>
+                                        <span class="budget-percent">68.9%</span>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar" style="width: 68.9%;"></div>
+                                    </div>
+                                    <div class="budget-detail">
+                                        <span>집행: 375억</span>
+                                        <span>예산: 545억</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Projects & Quick Actions -->
+                <div class="grid grid-cols-3 mb-8">
+                    <!-- Recent Projects (2/3 width) -->
+                    <div class="card" style="grid-column: span 2;">
+                        <div class="card-header">
+                            <h3 class="card-title">최근 사업 현황</h3>
+                            <a href="pages/projects/index.html" class="btn btn-outline btn-sm">전체보기</a>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-container">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>사업명</th>
+                                            <th>유형</th>
+                                            <th>국가</th>
+                                            <th>담당부서</th>
+                                            <th>진행률</th>
+                                            <th>상태</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="recentProjectsTable">
+                                        <tr>
+                                            <td><a href="#">캄보디아 관개시설 현대화 사업</a></td>
+                                            <td><span class="badge badge-primary">해외기술용역</span></td>
+                                            <td>🇰🇭 캄보디아</td>
+                                            <td>글로벌사업부</td>
+                                            <td>
+                                                <div class="progress" style="width: 100px;">
+                                                    <div class="progress-bar success" style="width: 85%;"></div>
+                                                </div>
+                                                <small>85%</small>
+                                            </td>
+                                            <td><span class="badge badge-success">진행중</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="#">베트남 스마트팜 구축 ODA</a></td>
+                                            <td><span class="badge badge-info">ODA 양자</span></td>
+                                            <td>🇻🇳 베트남</td>
+                                            <td>농식품국제개발협력센터</td>
+                                            <td>
+                                                <div class="progress" style="width: 100px;">
+                                                    <div class="progress-bar" style="width: 45%;"></div>
+                                                </div>
+                                                <small>45%</small>
+                                            </td>
+                                            <td><span class="badge badge-success">진행중</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="#">필리핀 K-라이스벨트 시범사업</a></td>
+                                            <td><span class="badge badge-warning">K-라이스벨트</span></td>
+                                            <td>🇵🇭 필리핀</td>
+                                            <td>농식품국제개발협력센터</td>
+                                            <td>
+                                                <div class="progress" style="width: 100px;">
+                                                    <div class="progress-bar" style="width: 20%;"></div>
+                                                </div>
+                                                <small>20%</small>
+                                            </td>
+                                            <td><span class="badge badge-info">기획</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="#">우즈베키스탄 농업용수관리 컨설팅</a></td>
+                                            <td><span class="badge badge-primary">해외기술용역</span></td>
+                                            <td>🇺🇿 우즈베키스탄</td>
+                                            <td>글로벌사업부</td>
+                                            <td>
+                                                <div class="progress" style="width: 100px;">
+                                                    <div class="progress-bar success" style="width: 100%;"></div>
+                                                </div>
+                                                <small>100%</small>
+                                            </td>
+                                            <td><span class="badge badge-secondary">완료</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions (1/3 width) -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">빠른 작업</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="quick-actions">
+                                <a href="pages/projects/new.html" class="quick-action-item">
+                                    <span class="quick-action-icon">➕</span>
+                                    <span>새 사업 등록</span>
+                                </a>
+                                <a href="pages/documents/upload.html" class="quick-action-item">
+                                    <span class="quick-action-icon">📤</span>
+                                    <span>문서 업로드</span>
+                                </a>
+                                <a href="pages/budget/execution.html" class="quick-action-item">
+                                    <span class="quick-action-icon">💳</span>
+                                    <span>예산 집행 등록</span>
+                                </a>
+                                <a href="pages/reports/create.html" class="quick-action-item">
+                                    <span class="quick-action-icon">📝</span>
+                                    <span>보고서 작성</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <h4 class="mb-3">다가오는 일정</h4>
+                            <div class="upcoming-events">
+                                <div class="event-item">
+                                    <div class="event-date">
+                                        <span class="event-day">23</span>
+                                        <span class="event-month">12월</span>
+                                    </div>
+                                    <div class="event-info">
+                                        <strong>캄보디아 현장점검</strong>
+                                        <small>글로벌사업부</small>
+                                    </div>
+                                </div>
+                                <div class="event-item">
+                                    <div class="event-date">
+                                        <span class="event-day">26</span>
+                                        <span class="event-month">12월</span>
+                                    </div>
+                                    <div class="event-info">
+                                        <strong>ODA 심의위원회</strong>
+                                        <small>농식품국제개발협력센터</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- World Map Section -->
+                <div class="card mb-8">
+                    <div class="card-header">
+                        <h3 class="card-title">🗺️ 글로벌 사업 현황</h3>
+                        <div class="flex gap-4">
+                            <span class="badge badge-primary">아시아 15건</span>
+                            <span class="badge badge-success">아프리카 10건</span>
+                            <span class="badge badge-info">중남미 5건</span>
+                            <span class="badge badge-warning">중동 2건</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="world-map-placeholder">
+                            <div class="map-region asia">
+                                <div class="country-marker" style="top: 35%; left: 75%;" data-tooltip="베트남: 4건">🇻🇳
+                                </div>
+                                <div class="country-marker" style="top: 45%; left: 72%;" data-tooltip="캄보디아: 3건">🇰🇭
+                                </div>
+                                <div class="country-marker" style="top: 55%; left: 70%;" data-tooltip="필리핀: 2건">🇵🇭
+                                </div>
+                                <div class="country-marker" style="top: 30%; left: 60%;" data-tooltip="우즈베키스탄: 2건">🇺🇿
+                                </div>
+                            </div>
+                            <div class="map-region africa">
+                                <div class="country-marker" style="top: 55%; left: 35%;" data-tooltip="탄자니아: 3건">🇹🇿
+                                </div>
+                                <div class="country-marker" style="top: 50%; left: 32%;" data-tooltip="에티오피아: 2건">🇪🇹
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/utils.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            App.init();
+        });
+    </script>
+</body>
+
+</html>
