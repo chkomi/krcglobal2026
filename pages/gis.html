@@ -12,19 +12,15 @@
     <link rel="stylesheet" href="../assets/css/base.css">
     <link rel="stylesheet" href="../assets/css/components.css">
 
-    <!-- Pretendard Font -->
-    <link rel="stylesheet" as="style" crossorigin
-        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
-
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="../frontend/lib/leaflet/leaflet.css" />
 
     <style>
-        /* KRC Global Map 스타일 */
+        /* KRC Global Map 스타일 - 내부망 최적화 */
         body {
             margin: 0;
             padding: 0;
-            font-family: var(--font-family-primary);
+            font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", "맑은 고딕", "Apple SD Gothic Neo", sans-serif;
             overflow: hidden;
         }
 
@@ -541,12 +537,18 @@
             map = L.map('map', {
                 center: [20, 100],
                 zoom: 4,
-                zoomControl: true
+                zoomControl: true,
+                maxBounds: [[-90, -180], [90, 180]],
+                maxBoundsViscosity: 1.0
             });
 
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '© OpenStreetMap',
-                maxZoom: 19
+            // 구글 지도 타일 (내부망에서도 사용 가능)
+            L.tileLayer('https://mt{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+                attribution: '© Google Maps',
+                maxZoom: 20,
+                subdomains: ['0', '1', '2', '3'],
+                tileSize: 256,
+                zoomOffset: 0
             }).addTo(map);
 
             markersLayer = L.layerGroup().addTo(map);
