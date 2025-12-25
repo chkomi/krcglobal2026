@@ -1,246 +1,225 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="한국농어촌공사 글로벌사업처 해외사업관리시스템 - GIS 지도">
     <title>GIS 지도 | GBMS</title>
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/dashboard.css">
-    <!-- Leaflet CSS - 로컬 경로 사용 (내부망 환경) -->
-    <link rel="stylesheet" href="lib/leaflet/leaflet.css" />
+
+    <!-- KRDS Design System -->
+    <link rel="stylesheet" href="../assets/css/variables.css">
+    <link rel="stylesheet" href="../assets/css/base.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <link rel="stylesheet" href="../assets/css/pages.css">
+
+    <!-- Pretendard Font -->
+    <link rel="stylesheet" as="style" crossorigin
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="../frontend/lib/leaflet/leaflet.css" />
+
     <style>
         /* GIS 페이지 전용 스타일 */
-        .gis-container {
-            height: calc(100vh - 60px);
-            position: relative;
+        .gis-page {
+            position: fixed;
+            top: var(--header-height);
+            left: var(--sidebar-width);
+            right: 0;
+            bottom: 0;
+            background: var(--color-neutral-100);
         }
-        
+
         #map {
             width: 100%;
             height: 100%;
             z-index: 1;
-            background-color: #f8fafb; /* 지도 배경색 (타일이 없을 때) */
-            min-height: 400px; /* 최소 높이 보장 */
         }
-        
-        /* 지도가 로드되지 않았을 때 표시할 메시지 */
-        .map-loading {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-            z-index: 1000;
-            text-align: center;
-        }
-        
-        .map-loading.hidden {
-            display: none;
-        }
-        
-        /* 지도 배경 이미지 스타일 (타일이 없을 때) */
-        .map-background-image {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0.3;
-            z-index: 0;
-            pointer-events: none;
-        }
-        
+
         /* 필터 패널 */
         .gis-filter-panel {
             position: absolute;
-            top: 80px;
+            top: 20px;
             left: 20px;
             z-index: 1000;
-            background: white;
-            border-radius: 12px;
-            padding: 16px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+            background: var(--color-neutral-0);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-5);
+            box-shadow: var(--shadow-lg);
             min-width: 280px;
             max-width: 350px;
         }
-        
+
         .gis-filter-panel h3 {
-            margin: 0 0 12px 0;
-            font-size: 16px;
-            color: #0A3D62;
+            margin: 0 0 var(--spacing-4) 0;
+            font-size: var(--font-size-lg);
+            color: var(--color-primary-700);
         }
-        
+
         .filter-group {
-            margin-bottom: 12px;
+            margin-bottom: var(--spacing-4);
         }
-        
+
         .filter-group label {
             display: block;
-            font-size: 13px;
-            font-weight: 600;
-            color: #495057;
-            margin-bottom: 6px;
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-neutral-700);
+            margin-bottom: var(--spacing-2);
         }
-        
+
         .filter-checkbox {
             display: flex;
             align-items: center;
-            gap: 8px;
-            margin-bottom: 6px;
+            gap: var(--spacing-2);
+            margin-bottom: var(--spacing-2);
         }
-        
+
         .filter-checkbox input[type="checkbox"] {
             width: 18px;
             height: 18px;
             cursor: pointer;
         }
-        
+
         .filter-checkbox label {
-            font-size: 13px;
-            font-weight: normal;
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-regular);
             cursor: pointer;
             margin: 0;
         }
-        
+
         .search-input {
             width: 100%;
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 13px;
-            margin-bottom: 12px;
+            padding: var(--spacing-3);
+            border: 1px solid var(--color-neutral-300);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-sm);
+            margin-bottom: var(--spacing-4);
         }
-        
+
         /* 범례 */
         .gis-legend {
             position: absolute;
             bottom: 20px;
             right: 20px;
             z-index: 1000;
-            background: white;
-            border-radius: 8px;
-            padding: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            background: var(--color-neutral-0);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-4);
+            box-shadow: var(--shadow-md);
         }
-        
+
         .legend-item {
             display: flex;
             align-items: center;
-            gap: 8px;
-            margin-bottom: 6px;
-            font-size: 12px;
+            gap: var(--spacing-2);
+            margin-bottom: var(--spacing-2);
+            font-size: var(--font-size-sm);
         }
-        
+
+        .legend-item:last-child {
+            margin-bottom: 0;
+        }
+
         .legend-dot {
             width: 16px;
             height: 16px;
             border-radius: 50%;
             border: 2px solid;
         }
-        
+
         .legend-dot.consulting {
-            border-color: #0A3D62;
-            background: rgba(10, 61, 98, 0.2);
+            border-color: var(--color-primary-500);
+            background: var(--color-primary-100);
         }
-        
+
         .legend-dot.oda {
-            border-color: #E65100;
-            background: rgba(230, 81, 0, 0.2);
+            border-color: var(--color-warning-500);
+            background: var(--color-warning-100);
         }
-        
-        /* 팝업 스타일 */
-        .leaflet-popup-content-wrapper {
-            border-radius: 12px !important;
-            box-shadow: 0 3px 15px rgba(0,0,0,0.2) !important;
-        }
-        
-        .leaflet-popup.consulting-popup .leaflet-popup-content-wrapper {
-            border: 3px solid #0A3D62 !important;
-        }
-        
-        .leaflet-popup.oda-popup .leaflet-popup-content-wrapper {
-            border: 3px solid #E65100 !important;
-        }
-        
-        .popup-content {
-            min-width: 200px;
-        }
-        
-        .popup-title {
-            font-weight: 700;
-            font-size: 14px;
-            color: #2c3e50;
-            margin-bottom: 8px;
-        }
-        
-        .popup-info {
-            font-size: 12px;
-            color: #6c757d;
-            margin-bottom: 4px;
-        }
-        
-        .popup-budget {
-            font-weight: 600;
-            color: #28a745;
-            margin-top: 8px;
-        }
-        
+
         /* 마커 스타일 */
         .custom-div-icon {
             background: transparent !important;
             border: none !important;
         }
-        
-        .marker-with-label {
+
+        .marker-pin {
+            width: 30px;
+            height: 30px;
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg);
+            border: 3px solid;
             display: flex;
-            flex-direction: column;
             align-items: center;
+            justify-content: center;
         }
-        
-        .marker-circle {
-            width: 20px;
-            height: 20px;
+
+        .marker-pin.consulting {
+            border-color: var(--color-primary-600);
+            background: var(--color-primary-500);
+        }
+
+        .marker-pin.oda {
+            border-color: #856404;
+            background: var(--color-warning-500);
+        }
+
+        .marker-inner {
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
-            border: 2px solid;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+            background: white;
+            transform: rotate(45deg);
         }
-        
-        .marker-circle.consulting {
-            border-color: #0A3D62;
-            background: rgba(10, 61, 98, 0.3);
+
+        /* 팝업 스타일 */
+        .leaflet-popup-content-wrapper {
+            border-radius: var(--radius-lg) !important;
+            box-shadow: var(--shadow-xl) !important;
         }
-        
-        .marker-circle.oda {
-            border-color: #E65100;
-            background: rgba(230, 81, 0, 0.3);
+
+        .popup-content {
+            min-width: 200px;
+            padding: var(--spacing-2);
         }
-        
-        .marker-label {
-            margin-top: 4px;
-            font-size: 11px;
-            font-weight: 700;
-            color: #2c3e50;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 120px;
+
+        .popup-title {
+            font-weight: var(--font-weight-bold);
+            font-size: var(--font-size-base);
+            color: var(--color-neutral-900);
+            margin-bottom: var(--spacing-2);
         }
-        
-        /* 모바일 대응 */
+
+        .popup-info {
+            font-size: var(--font-size-sm);
+            color: var(--color-neutral-600);
+            margin-bottom: var(--spacing-1);
+        }
+
+        .popup-budget {
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-success-500);
+            margin-top: var(--spacing-2);
+        }
+
+        /* 반응형 */
+        @media (max-width: 1200px) {
+            .gis-page {
+                left: 0;
+            }
+        }
+
         @media (max-width: 768px) {
             .gis-filter-panel {
-                top: 60px;
+                top: 10px;
                 left: 10px;
                 right: 10px;
                 min-width: auto;
                 max-width: none;
             }
-            
+
             .gis-legend {
                 bottom: 10px;
                 right: 10px;
@@ -249,714 +228,289 @@
         }
     </style>
 </head>
-<body>
-    <div class="app-container">
-        <!-- Sidebar -->
-        <aside class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <div class="sidebar-logo">🌏</div>
-                <span class="sidebar-title">GBMS</span>
-            </div>
 
-            <nav class="sidebar-nav">
-                <div class="nav-section">
-                    <div class="nav-section-title">메인</div>
-                    <a href="dashboard.html" class="nav-item">
-                        <span class="nav-icon">📊</span>
-                        <span class="nav-text">대시보드</span>
-                    </a>
-                </div>
+<body class="app-layout">
+    <a href="#main-content" class="skip-nav">본문 바로가기</a>
 
-                <div class="nav-section">
-                    <div class="nav-section-title">사업관리</div>
-                    <a href="consulting.html" class="nav-item">
-                        <span class="nav-icon">🔧</span>
-                        <span class="nav-text">해외기술용역</span>
-                    </a>
-                    <a href="pages/projects/oda.html" class="nav-item">
-                        <span class="nav-icon">🤝</span>
-                        <span class="nav-text">국제농업협력(ODA)</span>
-                    </a>
-                    <a href="pages/projects/investment.html" class="nav-item">
-                        <span class="nav-icon">🌱</span>
-                        <span class="nav-text">해외농업투자</span>
-                    </a>
-                    <a href="pages/projects/loan.html" class="nav-item">
-                        <span class="nav-icon">💳</span>
-                        <span class="nav-text">융자·보조사업</span>
-                    </a>
-                </div>
+    <!-- 헤더 -->
+    <header class="app-header">
+        <div class="header-left">
+            <button class="sidebar-toggle" id="sidebarToggle" aria-label="메뉴 토글">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 12h18M3 6h18M3 18h18" />
+                </svg>
+            </button>
+            <h1 class="app-title">
+                <span style="font-size: 32px;">🌏</span>
+                GBMS
+            </h1>
+        </div>
 
-                <div class="nav-section">
-                    <div class="nav-section-title">GIS</div>
-                    <a href="gis.html" class="nav-item active">
-                        <span class="nav-icon">🗺️</span>
-                        <span class="nav-text">GIS 지도</span>
-                    </a>
-                </div>
-
-                <div class="nav-section">
-                    <div class="nav-section-title">관리</div>
-                    <a href="pages/budget/index.html" class="nav-item">
-                        <span class="nav-icon">💰</span>
-                        <span class="nav-text">예산/정산</span>
-                    </a>
-                    <a href="pages/documents/index.html" class="nav-item">
-                        <span class="nav-icon">📄</span>
-                        <span class="nav-text">문서관리</span>
-                    </a>
-                    <a href="pages/offices/index.html" class="nav-item">
-                        <span class="nav-icon">🏢</span>
-                        <span class="nav-text">해외사무소</span>
-                    </a>
-                </div>
-            </nav>
-
-            <div class="sidebar-footer">
-                <button class="sidebar-toggle-btn" id="sidebarToggle">
-                    <span>◀</span>
+        <div class="header-right">
+            <button class="theme-toggle" id="themeToggle" aria-label="화면 모드 변경">🌙</button>
+            <div class="user-menu">
+                <button class="user-menu-button">
+                    <div class="user-avatar">관</div>
+                    <span id="userName" style="font-size: var(--font-size-sm);">관리자</span>
                 </button>
             </div>
-        </aside>
+        </div>
+    </header>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Header -->
-            <header class="header">
-                <div class="header-left">
-                    <button class="header-toggle" id="headerToggle">
-                        <span>☰</span>
+    <!-- 사이드바 -->
+    <aside class="app-sidebar" id="sidebar">
+        <nav class="sidebar-nav" aria-label="주메뉴">
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="../dashboard.html" class="nav-link">
+                        <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="7" height="7" />
+                            <rect x="14" y="3" width="7" height="7" />
+                            <rect x="14" y="14" width="7" height="7" />
+                            <rect x="3" y="14" width="7" height="7" />
+                        </svg>
+                        <span class="nav-text">대시보드</span>
+                    </a>
+                </li>
+                <li class="nav-item has-submenu">
+                    <button class="nav-link" aria-expanded="false">
+                        <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path d="M9 11l3 3L22 4" />
+                            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+                        </svg>
+                        <span class="nav-text">사업관리</span>
+                        <svg class="nav-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path d="M9 18l6-6-6-6" />
+                        </svg>
                     </button>
-                    <h1 class="header-title">GIS 지도</h1>
-                </div>
-                <div class="header-right">
-                    <div class="header-user dropdown" id="userDropdown">
-                        <div class="user-avatar" id="userAvatar">관</div>
-                        <div class="user-info">
-                            <span class="user-name" id="userName">관리자</span>
-                            <span class="user-role" id="userDept">글로벌농업개발부</span>
-                        </div>
-                    </div>
-                </div>
-            </header>
+                    <ul class="submenu">
+                        <li><a href="projects/overseas-tech.html">해외기술용역</a></li>
+                        <li><a href="projects/oda-bilateral.html">ODA 양자</a></li>
+                        <li><a href="projects/oda-multilateral.html">ODA 다자성양자</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="gis.html" class="nav-link active">
+                        <svg class="nav-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="10" r="3" />
+                            <path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 10-16 0c0 3 2.7 6.9 8 11.7z" />
+                        </svg>
+                        <span class="nav-text">GIS 지도</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
 
-            <!-- GIS Map Container -->
-            <div class="gis-container">
-                <!-- 로딩 메시지 -->
-                <div class="map-loading" id="mapLoading">
-                    <div style="margin-bottom: 10px;">🗺️</div>
-                    <div>지도를 로드하는 중...</div>
+    <!-- GIS 지도 -->
+    <main id="main-content" class="gis-page">
+        <div id="map"></div>
+
+        <!-- 필터 패널 -->
+        <div class="gis-filter-panel card">
+            <h3>필터</h3>
+            <input type="text" id="searchInput" class="search-input" placeholder="사업명, 국가 검색...">
+
+            <div class="filter-group">
+                <label>카테고리</label>
+                <div class="filter-checkbox">
+                    <input type="checkbox" id="filterConsulting" checked>
+                    <label for="filterConsulting">해외기술용역</label>
                 </div>
-                <!-- 배경 이미지 (타일이 없을 때 표시, 선택사항) -->
-                <img src="images/world-map-background.png" alt="World Map" class="map-background-image" id="mapBackground" style="display: none;" onerror="this.style.display='none';">
-                <div id="map"></div>
-                
-                <!-- Filter Panel -->
-                <div class="gis-filter-panel">
-                    <h3>필터</h3>
-                    <input type="text" id="searchInput" class="search-input" placeholder="사업명, 국가 검색...">
-                    
-                    <div class="filter-group">
-                        <label>카테고리</label>
-                        <div class="filter-checkbox">
-                            <input type="checkbox" id="filterConsulting" checked>
-                            <label for="filterConsulting">해외기술용역</label>
-                        </div>
-                        <div class="filter-checkbox">
-                            <input type="checkbox" id="filterODA" checked>
-                            <label for="filterODA">ODA</label>
-                        </div>
-                    </div>
-                    
-                    <div class="filter-group">
-                        <label>상태</label>
-                        <div class="filter-checkbox">
-                            <input type="checkbox" id="filterPlanning" checked>
-                            <label for="filterPlanning">기획</label>
-                        </div>
-                        <div class="filter-checkbox">
-                            <input type="checkbox" id="filterInProgress" checked>
-                            <label for="filterInProgress">진행중</label>
-                        </div>
-                        <div class="filter-checkbox">
-                            <input type="checkbox" id="filterCompleted" checked>
-                            <label for="filterCompleted">완료</label>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Legend -->
-                <div class="gis-legend">
-                    <div class="legend-item">
-                        <div class="legend-dot consulting"></div>
-                        <span>해외기술용역</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-dot oda"></div>
-                        <span>ODA</span>
-                    </div>
-                </div>
-                
-                <!-- 지도 스타일 선택 (옵션) -->
-                <div class="map-style-selector" style="position: absolute; top: 80px; right: 20px; z-index: 1000; background: white; border-radius: 8px; padding: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); display: none;">
-                    <label style="font-size: 12px; font-weight: 600; color: #495057; margin-bottom: 4px; display: block;">지도 스타일</label>
-                    <select id="mapStyleSelect" style="width: 100%; padding: 4px; border: 1px solid #ddd; border-radius: 4px; font-size: 12px;">
-                        <option value="m">일반 지도 (종이 지도)</option>
-                        <option value="t">지형도</option>
-                        <option value="s">위성 지도</option>
-                        <option value="y">하이브리드</option>
-                    </select>
+                <div class="filter-checkbox">
+                    <input type="checkbox" id="filterODA" checked>
+                    <label for="filterODA">ODA</label>
                 </div>
             </div>
-        </main>
-    </div>
 
-    <script src="js/utils.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/api.js"></script>
-    <script src="js/app.js"></script>
-    <!-- Leaflet JS - 로컬 경로 사용 (내부망 환경) -->
-    <script src="lib/leaflet/leaflet.js"></script>
+            <div class="filter-group">
+                <label>상태</label>
+                <div class="filter-checkbox">
+                    <input type="checkbox" id="filterPlanning" checked>
+                    <label for="filterPlanning">기획</label>
+                </div>
+                <div class="filter-checkbox">
+                    <input type="checkbox" id="filterInProgress" checked>
+                    <label for="filterInProgress">진행중</label>
+                </div>
+                <div class="filter-checkbox">
+                    <input type="checkbox" id="filterCompleted" checked>
+                    <label for="filterCompleted">완료</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- 범례 -->
+        <div class="gis-legend card">
+            <div class="legend-item">
+                <div class="legend-dot consulting"></div>
+                <span>해외기술용역</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot oda"></div>
+                <span>ODA</span>
+            </div>
+        </div>
+    </main>
+
+    <script src="../assets/js/common.js"></script>
+    <script src="../assets/js/api.js"></script>
+    <script src="../frontend/lib/leaflet/leaflet.js"></script>
     <script>
-        // GIS 지도 초기화
+        document.addEventListener('DOMContentLoaded', function () {
+            // 인증 확인
+            if (!checkAuth()) {
+                window.location.href = '../index.html';
+                return;
+            }
+
+            // 사이드바 토글
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebar = document.getElementById('sidebar');
+
+            sidebarToggle.addEventListener('click', function () {
+                sidebar.classList.toggle('open');
+            });
+
+            // 서브메뉴 토글
+            const submenuButtons = document.querySelectorAll('.nav-item.has-submenu > .nav-link');
+            submenuButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const isExpanded = this.getAttribute('aria-expanded') === 'true';
+                    this.setAttribute('aria-expanded', !isExpanded);
+                });
+            });
+
+            // 지도 초기화
+            initMap();
+            loadSampleData();
+        });
+
         let map = null;
         let markersLayer = null;
         let allProjects = [];
-        let filteredProjects = [];
-        let currentTileLayer = null; // 현재 타일 레이어
-        
-        // 국가 코드 매핑
-        const countryCodeMap = {
-            "베트남": "vn", "라오스": "la", "캄보디아": "kh", "필리핀": "ph", "몽골": "mn",
-            "우즈베키스탄": "uz", "키르기스스탄": "kg", "스리랑카": "lk", "미얀마": "mm",
-            "방글라데시": "bd", "태국": "th", "인도네시아": "id", "인도": "in", "네팔": "np",
-            "아프가니스탄": "af", "이란": "ir", "가나": "gh", "케냐": "ke", "탄자니아": "tz",
-            "세네갈": "sn", "우간다": "ug", "카메룬": "cm", "모잠비크": "mz", "에티오피아": "et",
-            "말라위": "mw", "앙골라": "ao", "감비아": "gm", "기니": "gn", "DR콩고": "cd",
-            "콩고민주공화국": "cd", "코트디브아르": "ci", "볼리비아": "bo", "엘살바도르": "sv",
-            "페루": "pe", "키리바시": "ki", "한국": "kr", "일본": "jp", "중국": "cn",
-            "러시아": "ru", "미국": "us", "요르단": "jo", "알제리": "dz", "파라과이": "py",
-            "말레이시아": "my", "브루나이": "bn", "과테말라": "gt", "파키스탄": "pk",
-            "아르헨티나": "ar"
-        };
-        
-        // 지도 초기화
+
         function initMap() {
-            // 지도 컨테이너 확인
-            const mapContainer = document.getElementById('map');
-            if (!mapContainer) {
-                console.error('지도 컨테이너(#map)를 찾을 수 없습니다.');
-                return;
-            }
-            
-            console.log('지도 컨테이너 확인 완료');
-            
             try {
                 map = L.map('map', {
-                    center: [20, 0],
-                    zoom: 3,
+                    center: [20, 100],
+                    zoom: 4,
                     zoomControl: true
                 });
-                
-                console.log('Leaflet 지도 객체 생성 완료');
+
+                // OpenStreetMap 타일 레이어
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors',
+                    maxZoom: 19
+                }).addTo(map);
+
+                markersLayer = L.layerGroup().addTo(map);
+
+                console.log('지도 초기화 완료');
             } catch (error) {
-                console.error('지도 생성 실패:', error);
-                alert('지도를 생성할 수 없습니다: ' + error.message);
-                return;
-            }
-            
-            // 타일 레이어 설정 - 구글 지도 XYZ 타일 사용
-            // 1순위: 구글 지도 타일 (종이 지도 느낌)
-            // 2순위: 로컬 타일 (내부망 환경)
-            // 3순위: 배경 이미지 또는 그리드
-            
-            let tileLayerAdded = false;
-            
-            // 구글 지도 타일 레이어 (일반 지도 - 종이 지도 느낌)
-            // lyrs=m: 일반 지도 (Map)
-            // lyrs=t: 지형도 (Terrain)
-            // lyrs=s: 위성 지도 (Satellite)
-            // lyrs=y: 하이브리드 (Hybrid)
-            try {
-                const googleMapLayer = L.tileLayer('https://mt{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
-                    attribution: '© Google Maps',
-                    maxZoom: 20,
-                    subdomains: ['0', '1', '2', '3'],
-                    tileSize: 256,
-                    zoomOffset: 0
-                });
-                
-                // 타일 로드 성공/실패 확인
-                googleMapLayer.on('tileerror', function(error, tile) {
-                    console.warn('구글 지도 타일 로드 실패:', error);
-                    if (!tileLayerAdded) {
-                        tryLocalTile();
-                    }
-                });
-                
-                googleMapLayer.on('tileload', function() {
-                    tileLayerAdded = true;
-                });
-                
-                googleMapLayer.addTo(map);
-                currentTileLayer = googleMapLayer;
-                
-                // 타임아웃 설정: 3초 내 타일이 로드되지 않으면 대체 방법 시도
-                setTimeout(function() {
-                    if (!tileLayerAdded) {
-                        console.info('구글 지도 타일을 로드할 수 없습니다. (내부망 환경일 수 있습니다)');
-                        console.info('대체 방법을 시도합니다.');
-                        tryLocalTile();
-                    } else {
-                        console.info('구글 지도 타일이 정상적으로 로드되었습니다.');
-                    }
-                }, 3000);
-                
-            } catch (e) {
-                console.warn('구글 지도 타일 레이어 생성 실패:', e);
-                tryLocalTile();
-            }
-            
-            // 로컬 타일 시도
-            function tryLocalTile() {
-                if (tileLayerAdded) return;
-                
-                try {
-                    const localTileLayer = L.tileLayer('lib/leaflet/tiles/{z}/{x}/{y}.png', {
-                        attribution: '© GBMS',
-                        maxZoom: 18,
-                        errorTileUrl: null
-                    });
-                    
-                    localTileLayer.on('tileerror', function() {
-                        if (!tileLayerAdded) {
-                            addDefaultTileLayer();
-                        }
-                    });
-                    
-                    localTileLayer.on('tileload', function() {
-                        tileLayerAdded = true;
-                    });
-                    
-                    localTileLayer.addTo(map);
-                    
-                    setTimeout(function() {
-                        if (!tileLayerAdded) {
-                            addDefaultTileLayer();
-                        }
-                    }, 2000);
-                    
-                } catch (e) {
-                    console.log('로컬 타일을 찾을 수 없습니다.');
-                    addDefaultTileLayer();
-                }
-            }
-            
-            // 기본 배경 추가 (타일이 모두 실패한 경우)
-            // 즉시 기본 배경 추가 (타일이 로드되면 덮어씀)
-            setTimeout(function() {
-                if (!tileLayerAdded) {
-                    console.info('타일이 로드되지 않았습니다. 기본 배경을 표시합니다.');
-                    addDefaultTileLayer();
-                }
-            }, 1000);
-            
-            markersLayer = L.layerGroup().addTo(map);
-            console.log('마커 레이어 생성 완료');
-        }
-        
-        // 기본 타일 레이어 추가 (배경 이미지 또는 그리드)
-        function addDefaultTileLayer() {
-            if (!map) {
-                console.error('지도 객체가 없습니다.');
-                return;
-            }
-            
-            // 배경 이미지가 있으면 사용
-            const bgImage = document.getElementById('mapBackground');
-            if (bgImage) {
-                // 이미지가 이미 로드되어 있는지 확인
-                if (bgImage.complete && bgImage.naturalWidth > 0) {
-                    bgImage.style.display = 'block';
-                    console.info('배경 이미지를 사용합니다.');
-                    return;
-                }
-                
-                // 이미지 로드 이벤트
-                bgImage.onload = function() {
-                    this.style.display = 'block';
-                    console.info('배경 이미지를 사용합니다.');
-                };
-                
-                bgImage.onerror = function() {
-                    console.info('배경 이미지를 로드할 수 없습니다. 그리드 배경을 사용합니다.');
-                    addGridBackground();
-                };
-                
-                // 이미지 로드 시도 (이미 src가 있으면 자동 로드됨)
-                if (!bgImage.src || bgImage.src === window.location.href) {
-                    bgImage.src = 'images/world-map-background.png';
-                }
-            } else {
-                console.info('배경 이미지 요소를 찾을 수 없습니다. 그리드 배경을 사용합니다.');
-                addGridBackground();
+                console.error('지도 초기화 실패:', error);
+                alert('지도를 로드할 수 없습니다. Leaflet 라이브러리를 확인하세요.');
             }
         }
-        
-        // 그리드 배경 추가
-        function addGridBackground() {
-            if (!map) {
-                console.error('지도 객체가 없습니다.');
-                return;
-            }
-            
-            try {
-                const gridBackground = L.tileLayer('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZ3JpZCIgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48cGF0aCBkPSJNIDIwIDAgTCAwIDAgMCAyMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZTBlNGU4IiBzdHJva2Utd2lkdGg9IjAuNSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjI1NiIgaGVpZ2h0PSIyNTYiIGZpbGw9IiNmOGZhZmIiLz48cmVjdCB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgZmlsbD0idXJsKCNncmlkKSIvPjwvc3ZnPg==', {
-                    attribution: '© GBMS',
-                    maxZoom: 18,
-                    tileSize: 256,
-                    zoomOffset: 0
-                });
-                gridBackground.addTo(map);
-                console.info('그리드 배경을 사용합니다.');
-            } catch (error) {
-                console.error('그리드 배경 생성 실패:', error);
-            }
+
+        function loadSampleData() {
+            // 샘플 데이터
+            allProjects = [
+                { name: '베트남', description: '캄보디아 관개시설 현대화', lat: 12.5657, lng: 104.9910, category: 'Consulting', budget: 8500 },
+                { name: '라오스', description: '라오스 농업용수 개발', lat: 17.9757, lng: 102.6331, category: 'ODA', budget: 5200 },
+                { name: '필리핀', description: '필리핀 스마트팜 구축', lat: 12.8797, lng: 121.7740, category: 'ODA', budget: 12000 },
+                { name: '우즈베키스탄', description: '우즈베키스탄 관개 컨설팅', lat: 41.3775, lng: 64.5853, category: 'Consulting', budget: 6800 },
+                { name: '미얀마', description: '미얀마 농업 기술지원', lat: 21.9162, lng: 95.9560, category: 'Consulting', budget: 4500 }
+            ];
+
+            updateMarkers();
+
+            // 필터 이벤트
+            document.getElementById('searchInput').addEventListener('input', applyFilters);
+            document.getElementById('filterConsulting').addEventListener('change', applyFilters);
+            document.getElementById('filterODA').addEventListener('change', applyFilters);
+            document.getElementById('filterPlanning').addEventListener('change', applyFilters);
+            document.getElementById('filterInProgress').addEventListener('change', applyFilters);
+            document.getElementById('filterCompleted').addEventListener('change', applyFilters);
         }
-        
-        // 프로젝트 데이터 로드
-        async function loadProjects() {
-            try {
-                console.log('프로젝트 데이터 로드 시작...');
-                const response = await API.get('/gis/projects');
-                console.log('API 응답:', response);
-                
-                if (response.success) {
-                    console.log('받은 프로젝트 수:', response.data.length);
-                    
-                    // 백엔드 API 형식에 맞게 변환
-                    allProjects = response.data.map(project => ({
-                        ...project,
-                        lat: project.latitude || project.lat,
-                        lng: project.longitude || project.lng,
-                        name: project.country || project.name,
-                        description: project.title || project.description
-                    }));
-                    
-                    console.log('변환된 프로젝트 수:', allProjects.length);
-                    console.log('프로젝트 샘플:', allProjects[0]);
-                    
-                    // 좌표가 있는 프로젝트 확인
-                    const withCoords = allProjects.filter(p => {
-                        const lat = parseFloat(p.lat || p.latitude);
-                        const lng = parseFloat(p.lng || p.longitude);
-                        return lat && lng && !isNaN(lat) && !isNaN(lng);
-                    });
-                    console.log('좌표가 있는 프로젝트 수:', withCoords.length);
-                    
-                    if (allProjects.length === 0) {
-                        console.warn('프로젝트 데이터가 없습니다. 데이터베이스에 좌표 정보가 있는 프로젝트가 있는지 확인하세요.');
-                    } else if (withCoords.length === 0) {
-                        console.warn('좌표 정보가 있는 프로젝트가 없습니다. 프로젝트에 latitude와 longitude 값을 추가하세요.');
-                    }
-                    
-                    applyFilters();
-                } else {
-                    console.error('API 응답 실패:', response);
-                }
-            } catch (error) {
-                console.error('프로젝트 데이터 로드 실패:', error);
-                console.error('오류 상세:', error.message, error.stack);
-                if (Utils && Utils.showNotification) {
-                    Utils.showNotification('데이터를 불러올 수 없습니다: ' + error.message, 'error');
-                } else {
-                    alert('데이터를 불러올 수 없습니다: ' + error.message);
-                }
-            }
-        }
-        
-        // 마커 생성
+
         function createMarker(project) {
             const category = project.category || 'Consulting';
-            const color = category === 'ODA' ? '#E65100' : '#0A3D62';
-            const lat = parseFloat(project.lat || project.latitude);
-            const lng = parseFloat(project.lng || project.longitude);
-            
-            // 좌표 유효성 검사
-            if (!lat || !lng || isNaN(lat) || isNaN(lng) || lat === 0 || lng === 0) {
-                console.debug('유효하지 않은 좌표:', { lat, lng, project: project.title || project.description });
-                return null;
-            }
-            
-            // 좌표 범위 검사 (위도: -90 ~ 90, 경도: -180 ~ 180)
-            if (lat < -90 || lat > 90 || lng < -180 || lng > 180) {
-                console.warn('좌표 범위를 벗어남:', { lat, lng, project: project.title || project.description });
-                return null;
-            }
-            
+            const iconClass = category === 'ODA' ? 'oda' : 'consulting';
+
             const iconHtml = `
-                <div class="marker-with-label">
-                    <div class="marker-circle ${category === 'ODA' ? 'oda' : 'consulting'}"></div>
-                    <div class="marker-label">${(project.description || '').substring(0, 8)}</div>
+                <div class="marker-pin ${iconClass}">
+                    <div class="marker-inner"></div>
                 </div>
             `;
-            
+
             const customIcon = L.divIcon({
                 html: iconHtml,
                 className: 'custom-div-icon',
-                iconSize: [100, 40],
-                iconAnchor: [50, 40],
-                popupAnchor: [0, -40]
+                iconSize: [30, 30],
+                iconAnchor: [15, 30],
+                popupAnchor: [0, -30]
             });
-            
-            const marker = L.marker([lat, lng], { icon: customIcon });
-            
-            const title = project.description || project.title || '사업명 없음';
-            const country = project.name || project.country || '';
-            const period = project.period || (project.startDate && project.endDate ? 
-                `${project.startDate.substring(0, 4)}-${project.endDate.substring(0, 4)}` : '');
-            const budget = project.budget || project.budgetTotal || 0;
-            const budgetText = budget > 0 ? 
-                `${Math.round(budget / 100).toLocaleString()}억원` : '';
-            
+
+            const marker = L.marker([project.lat, project.lng], { icon: customIcon });
+
             const popupContent = `
                 <div class="popup-content">
-                    <div class="popup-title">${title}</div>
-                    <div class="popup-info"><strong>국가:</strong> ${country}</div>
+                    <div class="popup-title">${project.description}</div>
+                    <div class="popup-info"><strong>국가:</strong> ${project.name}</div>
                     <div class="popup-info"><strong>카테고리:</strong> ${category}</div>
-                    ${period ? `<div class="popup-info"><strong>기간:</strong> ${period}</div>` : ''}
-                    ${budgetText ? `<div class="popup-budget"><strong>예산:</strong> ${budgetText}</div>` : ''}
-                    ${project.client ? `<div class="popup-info"><strong>발주처:</strong> ${project.client}</div>` : ''}
-                    ${project.code ? `<div class="popup-info"><strong>사업코드:</strong> ${project.code}</div>` : ''}
+                    ${project.budget ? `<div class="popup-budget"><strong>예산:</strong> ${formatCurrency(project.budget * 1000000)}</div>` : ''}
                 </div>
             `;
-            
-            const popupClassName = category === 'ODA' ? 'oda-popup' : 'consulting-popup';
-            marker.bindPopup(popupContent, {
-                className: popupClassName,
-                maxWidth: 300
-            });
-            
+
+            marker.bindPopup(popupContent, { maxWidth: 300 });
+
             return marker;
         }
-        
-        // 필터 적용
+
+        function updateMarkers() {
+            if (!markersLayer) return;
+
+            markersLayer.clearLayers();
+
+            allProjects.forEach(project => {
+                const marker = createMarker(project);
+                markersLayer.addLayer(marker);
+            });
+        }
+
         function applyFilters() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             const showConsulting = document.getElementById('filterConsulting').checked;
             const showODA = document.getElementById('filterODA').checked;
-            const showPlanning = document.getElementById('filterPlanning').checked;
-            const showInProgress = document.getElementById('filterInProgress').checked;
-            const showCompleted = document.getElementById('filterCompleted').checked;
-            
-            filteredProjects = allProjects.filter(project => {
-                // 카테고리 필터
+
+            markersLayer.clearLayers();
+
+            allProjects.forEach(project => {
                 const category = project.category || 'Consulting';
-                if (category === 'ODA' && !showODA) return false;
-                if (category === 'Consulting' && !showConsulting) return false;
-                
+
+                // 카테고리 필터
+                if (category === 'ODA' && !showODA) return;
+                if (category === 'Consulting' && !showConsulting) return;
+
                 // 검색 필터
                 if (searchTerm) {
                     const searchable = [
                         project.description || '',
-                        project.title || '',
-                        project.name || '',
-                        project.country || ''
+                        project.name || ''
                     ].join(' ').toLowerCase();
-                    if (!searchable.includes(searchTerm)) return false;
+                    if (!searchable.includes(searchTerm)) return;
                 }
-                
-                // 상태 필터
-                const status = project.status || '';
-                if (status === 'planning' && !showPlanning) return false;
-                if (status === 'in_progress' && !showInProgress) return false;
-                if (status === 'completed' && !showCompleted) return false;
-                
-                return true;
-            });
-            
-            updateMarkers();
-        }
-        
-        // 마커 업데이트
-        function updateMarkers() {
-            if (!markersLayer) {
-                console.error('마커 레이어가 없습니다.');
-                return;
-            }
-            
-            console.log('마커 업데이트 시작...');
-            console.log('필터링된 프로젝트 수:', filteredProjects.length);
-            
-            markersLayer.clearLayers();
-            
-            let markerCount = 0;
-            filteredProjects.forEach((project, index) => {
+
                 const marker = createMarker(project);
-                if (marker) {
-                    markersLayer.addLayer(marker);
-                    markerCount++;
-                } else {
-                    console.warn(`프로젝트 ${index} 마커 생성 실패:`, project);
-                }
-            });
-            
-            console.log('생성된 마커 수:', markerCount);
-            
-            // 지도 범위 조정
-            if (markerCount > 0) {
-                const bounds = filteredProjects
-                    .filter(p => {
-                        const lat = parseFloat(p.lat || p.latitude);
-                        const lng = parseFloat(p.lng || p.longitude);
-                        return lat && lng && !isNaN(lat) && !isNaN(lng);
-                    })
-                    .map(p => {
-                        const lat = parseFloat(p.lat || p.latitude);
-                        const lng = parseFloat(p.lng || p.longitude);
-                        return [lat, lng];
-                    });
-                
-                if (bounds.length > 0) {
-                    try {
-                        const boundsObj = L.latLngBounds(bounds);
-                        map.fitBounds(boundsObj, { padding: [50, 50], maxZoom: 10 });
-                        console.log('지도 범위 조정 완료:', boundsObj);
-                    } catch (e) {
-                        console.warn('지도 범위 조정 실패:', e);
-                    }
-                }
-            } else {
-                console.warn('표시할 마커가 없습니다.');
-            }
-        }
-        
-        // 지도 스타일 변경
-        function changeMapStyle(style) {
-            if (!map) return;
-            
-            // 기존 타일 레이어 제거
-            if (currentTileLayer) {
-                map.removeLayer(currentTileLayer);
-            }
-            
-            // 새로운 타일 레이어 추가
-            const styleMap = {
-                'm': '일반 지도',
-                't': '지형도',
-                's': '위성 지도',
-                'y': '하이브리드'
-            };
-            
-            const googleMapLayer = L.tileLayer('https://mt{s}.google.com/vt/lyrs=' + style + '&x={x}&y={y}&z={z}', {
-                attribution: '© Google Maps',
-                maxZoom: 20,
-                subdomains: ['0', '1', '2', '3'],
-                tileSize: 256,
-                zoomOffset: 0
-            });
-            
-            googleMapLayer.addTo(map);
-            currentTileLayer = googleMapLayer;
-            
-            console.info('지도 스타일 변경: ' + styleMap[style]);
-        }
-        
-        // 이벤트 리스너
-        document.getElementById('searchInput').addEventListener('input', applyFilters);
-        document.getElementById('filterConsulting').addEventListener('change', applyFilters);
-        document.getElementById('filterODA').addEventListener('change', applyFilters);
-        document.getElementById('filterPlanning').addEventListener('change', applyFilters);
-        document.getElementById('filterInProgress').addEventListener('change', applyFilters);
-        document.getElementById('filterCompleted').addEventListener('change', applyFilters);
-        
-        // 지도 스타일 선택 이벤트
-        const mapStyleSelect = document.getElementById('mapStyleSelect');
-        if (mapStyleSelect) {
-            mapStyleSelect.addEventListener('change', function(e) {
-                changeMapStyle(e.target.value);
+                markersLayer.addLayer(marker);
             });
         }
-        
-        // 초기화
-        document.addEventListener('DOMContentLoaded', async function() {
-            // Leaflet 라이브러리 로드 대기 (최대 5초)
-            let leafletLoaded = false;
-            let waitCount = 0;
-            const maxWait = 50; // 5초 (100ms * 50)
-            
-            while (typeof L === 'undefined' && waitCount < maxWait) {
-                await new Promise(resolve => setTimeout(resolve, 100));
-                waitCount++;
-            }
-            
-            // Leaflet 라이브러리 로드 확인
-            if (typeof L === 'undefined') {
-                console.error('Leaflet 라이브러리를 로드할 수 없습니다.');
-                console.error('해결 방법:');
-                console.error('1. lib/leaflet/leaflet.js 파일이 있는지 확인');
-                console.error('2. LEAFLET_DOWNLOAD_GUIDE.md 파일 참고하여 다운로드');
-                console.error('3. 또는 인터넷이 연결된 경우 CDN에서 자동 로드됨');
-                
-                const loadingMsg = document.getElementById('mapLoading');
-                if (loadingMsg) {
-                    loadingMsg.innerHTML = `
-                        <div style="margin-bottom: 10px;">⚠️</div>
-                        <div style="font-weight: 600; margin-bottom: 10px;">Leaflet 라이브러리를 찾을 수 없습니다</div>
-                        <div style="font-size: 12px; color: #666; text-align: left; max-width: 300px;">
-                            <p style="margin: 5px 0;">필요한 파일:</p>
-                            <ul style="margin: 5px 0; padding-left: 20px;">
-                                <li>lib/leaflet/leaflet.css</li>
-                                <li>lib/leaflet/leaflet.js</li>
-                            </ul>
-                            <p style="margin: 10px 0 5px 0;">해결 방법:</p>
-                            <p style="margin: 5px 0;">LEAFLET_DOWNLOAD_GUIDE.md 파일을 참고하세요.</p>
-                        </div>
-                    `;
-                }
-                return;
-            }
-            
-                console.log('Leaflet 라이브러리 로드 완료');
-            
-            // 로딩 메시지 숨김
-            const loadingMsg = document.getElementById('mapLoading');
-            
-            try {
-                // App 초기화는 건너뛰기 (GIS 페이지는 독립적으로 작동)
-                // 인증이 필요한 경우에만 App.init() 호출
-                // if (typeof App !== 'undefined' && App.init) {
-                //     App.init();
-                // }
-                
-                // 지도 초기화
-                console.log('지도 초기화 시작...');
-                initMap();
-                
-                // 지도가 생성되었는지 확인
-                if (map) {
-                    console.log('지도 생성 성공');
-                    if (loadingMsg) loadingMsg.classList.add('hidden');
-                } else {
-                    console.error('지도 생성 실패');
-                    if (loadingMsg) {
-                        loadingMsg.innerHTML = '<div style="margin-bottom: 10px;">⚠️</div><div>지도를 생성할 수 없습니다.</div><div style="font-size: 12px; margin-top: 10px; color: #666;">브라우저 콘솔을 확인하세요.</div>';
-                    }
-                }
-                
-                // 프로젝트 데이터 로드
-                console.log('프로젝트 데이터 로드 시작...');
-                await loadProjects();
-                
-                console.log('GIS 지도 초기화 완료');
-            } catch (error) {
-                console.error('지도 초기화 중 오류 발생:', error);
-                if (loadingMsg) {
-                    loadingMsg.innerHTML = '<div style="margin-bottom: 10px;">❌</div><div>오류가 발생했습니다.</div><div style="font-size: 12px; margin-top: 10px; color: #666;">' + error.message + '</div>';
-                }
-            }
-        });
     </script>
 </body>
-</html>
 
+</html>
